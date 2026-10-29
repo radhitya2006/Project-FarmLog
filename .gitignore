@@ -1,0 +1,34 @@
+# Konfigurasi lokal dan rahasia
+.env
+.env.*
+!.env.example
+
+# Dependency PHP dan JavaScript
+/vendor/
+/node_modules/
+
+# Hasil build frontend dan tautan storage Laravel
+/public/build/
+/public/hot
+/public/storage
+
+# File yang dibuat saat aplikasi berjalan
+/bootstrap/cache/*.php
+/storage/*.key
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Hasil pengujian
+/.phpunit.cache/
+/coverage/
+/test-results/
+/database/*.sqlite
+/database/*.sqlite-*
+
+# Berkas sistem dan editor lokal
+.DS_Store
+Thumbs.db
+/.idea/
+/.fleet/
