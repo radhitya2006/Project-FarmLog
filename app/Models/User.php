@@ -19,6 +19,11 @@ class User extends Authenticatable
 
     protected $hidden = ['password'];
 
+    public function dashboardRoute(): string
+    {
+        return $this->role === UserRole::Admin ? 'admin.dashboard' : 'farmer.dashboard';
+    }
+
     /** @return HasMany<Land, $this> */
     public function lands(): HasMany
     {
