@@ -32,14 +32,12 @@ Dalam MVP, petani membuat akun sendiri dan login. Admin mengelola status akun pe
 Admin adalah pengelola aplikasi. Admin menggunakan panel admin untuk:
 
 - masuk melalui halaman login yang sama dengan petani;
-- melihat daftar akun petani;
-- membuat akun petani secara manual jika diperlukan;
-- mengubah nama, email, dan data akun petani;
-- mengelola status akun tanpa dapat mengubah peran akun;
-- mengaktifkan atau menonaktifkan akun petani; dan
+- melihat daftar dan detail akun petani;
+- mencari akun petani berdasarkan nama atau email;
+- mengaktifkan atau menonaktifkan akses akun petani setelah konfirmasi; dan
 - keluar dari aplikasi.
 
-Akun admin pertama dibuat melalui database seeder. Pendaftaran publik hanya menghasilkan akun dengan peran petani; akun admin tidak dapat dibuat melalui formulir registrasi. Admin tidak dapat mengubah peran akun.
+Akun admin pertama dibuat melalui database seeder. Pendaftaran publik hanya menghasilkan akun dengan peran petani; akun admin tidak dapat dibuat melalui formulir registrasi. Admin tidak dapat membuat atau menghapus akun petani, maupun mengubah nama, email, kata sandi, atau peran akun mereka.
 
 ### 3.2 Petani
 
@@ -76,14 +74,12 @@ Petani tidak dapat mengakses panel admin atau data milik petani lain. Petani yan
 
 ### 4.2 Panel Admin dan Akun Petani
 
-- Menampilkan daftar petani beserta nama, email, dan status akun.
-- Menambahkan akun petani secara manual dengan nama, email, dan kata sandi awal.
-- Mengubah data akun petani.
-- Mengaktifkan atau menonaktifkan akun petani.
-- Admin tidak dapat mengubah peran akun.
-- Menampilkan pesan validasi dan hasil operasi kepada admin.
+- Menampilkan daftar dan detail petani beserta nama, email, tanggal bergabung, dan status akun.
+- Menyediakan pencarian berdasarkan nama atau email serta penyaringan berdasarkan status akun.
+- Meminta konfirmasi sebelum admin mengaktifkan atau menonaktifkan akses akun petani.
+- Menampilkan pesan hasil perubahan status kepada admin.
 
-Penghapusan permanen akun petani tidak digunakan dalam MVP agar riwayat data pertanian tidak hilang. Admin menggunakan status aktif atau nonaktif.
+Petani membuat akun sendiri. Panel admin tidak menyediakan pembuatan atau penghapusan akun, maupun perubahan nama, email, kata sandi, dan peran petani. Penonaktifan akses tidak menghapus akun atau riwayat data pertanian. Akun nonaktif tidak dapat login dan sesi yang masih aktif ditolak pada permintaan berikutnya.
 
 ### 4.3 Ringkasan Petani
 
@@ -234,14 +230,14 @@ Semua pemeriksaan kepemilikan data dilakukan di server menggunakan policy atau q
 6. Jika pengguna adalah admin, sistem membuka panel admin.
 7. Jika pengguna adalah petani, sistem membuka halaman ringkasan petani.
 
-### 7.3 Alur Admin Mengelola Petani
+### 7.3 Alur Admin Mengelola Akses Petani
 
 1. Admin masuk ke panel admin.
 2. Admin membuka menu Akun Petani.
-3. Admin melihat daftar petani dan status akunnya.
-4. Admin dapat membuat atau mengubah akun petani.
-5. Admin dapat menonaktifkan akun tanpa menghapus riwayat datanya.
-6. Sistem memvalidasi data dan menampilkan hasil operasi.
+3. Admin melihat daftar atau detail petani dan status akunnya.
+4. Admin memilih aksi aktifkan atau nonaktifkan akses pada akun petani.
+5. Sistem menampilkan dialog konfirmasi beserta dampak perubahan status.
+6. Setelah admin mengonfirmasi, sistem mengubah status akses dan menampilkan hasil operasi. Riwayat data pertanian tetap tersimpan.
 
 ### 7.4 Alur Petani dari Lahan sampai Panen
 
@@ -305,7 +301,7 @@ MVP dianggap selesai apabila:
 - admin dapat login dan diarahkan ke panel admin;
 - petani dapat membuat akun sendiri dan kembali ke halaman login setelah registrasi;
 - pengguna yang sudah login dan membuka halaman login atau registrasi dialihkan ke halaman sesuai perannya;
-- admin dapat membuat, mengubah, mengaktifkan, dan menonaktifkan akun petani;
+- admin dapat melihat daftar/detail petani dan mengaktifkan atau menonaktifkan akses setelah konfirmasi, tetapi tidak dapat membuat, menghapus, atau mengubah identitas akun petani;
 - akun petani aktif dapat login, sedangkan akun nonaktif ditolak;
 - petani dapat mengelola lahan dan musim tanam miliknya;
 - petani dapat mencatat serta menyelesaikan kegiatan;
@@ -327,7 +323,7 @@ MVP dianggap selesai apabila:
 8. Rate limit menolak percobaan login setelah 5 percobaan per menit dan registrasi setelah 3 percobaan per jam dari IP yang sama.
 9. Email dengan perbedaan huruf besar, huruf kecil, atau spasi dianggap sebagai email yang sama dan ditolak sebagai duplikat.
 10. Petani A tidak dapat melihat, mengubah, atau menghapus data Petani B.
-11. Admin berhasil membuat akun petani dengan email unik, tetapi tidak dapat mengubah peran akun.
+11. Admin dapat melihat akun petani dan mengubah status akses setelah konfirmasi; permintaan membuat, menghapus, atau mengubah nama, email, kata sandi, maupun peran akun ditolak. Penonaktifan tidak menghapus riwayat pertanian.
 12. Validasi menolak data lahan, musim tanam, kegiatan, atau panen yang tidak lengkap atau tidak valid.
 13. Satu lahan dapat memiliki beberapa riwayat musim tanam.
 14. Satu musim tanam dapat memiliki beberapa kegiatan dan catatan panen.
@@ -344,6 +340,6 @@ MVP dianggap selesai apabila:
 - Verifikasi email dan perlindungan bot ditunda karena berada di luar cakupan MVP.
 - Lokasi lahan disimpan sebagai teks; integrasi peta berada di luar MVP.
 - Aplikasi membutuhkan koneksi internet atau jaringan lokal; mode offline berada di luar MVP.
-- Admin hanya mengelola akun petani dan tidak mengubah data pertanian mereka dalam MVP.
+- Admin hanya melihat akun petani dan mengelola status akses; admin tidak membuat atau menghapus akun, mengubah identitas petani, maupun mengubah data pertanian mereka dalam MVP.
 - Keuangan, penjualan, inventaris, cuaca, dan notifikasi berada di luar MVP.
 - Data contoh untuk demonstrasi disediakan melalui seeder agar alur aplikasi mudah dipresentasikan.

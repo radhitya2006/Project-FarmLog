@@ -35,12 +35,12 @@ app/
 ├── Http/
 │   ├── Controllers/
 │   │   ├── Auth/                # Register, login, logout
-│   │   ├── Admin/               # Pengelolaan akun petani
+│   │   ├── Admin/               # Daftar/detail petani dan status akses
 │   │   └── Farmer/              # Dashboard, lahan, musim, kegiatan, panen
 │   ├── Middleware/              # Akun aktif dan pemeriksaan role
 │   └── Requests/
 │       ├── Auth/
-│       ├── Admin/
+│       ├── Admin/               # Validasi perubahan status akses
 │       └── Farmer/              # Form Request per operasi create/update
 ├── Models/                      # User, Land, PlantingSeason, Activity, Harvest
 ├── Policies/                    # Pemeriksaan kepemilikan setiap resource
@@ -120,14 +120,16 @@ Jangan membuat repository layer untuk membungkus Eloquent atau service untuk set
 ## 6. Autentikasi, Role, dan Kepemilikan Data
 
 - Registrasi publik selalu membuat `role = petani` dan `is_active = true` di server. Abaikan atau tolak input `role` dan `is_active` dari client.
-- Normalisasi email pada registrasi, login, dan pengelolaan akun admin dengan aturan yang sama: hapus whitespace, lalu ubah ke huruf kecil sebelum validasi/penyimpanan.
+- Normalisasi email pada registrasi dan login dengan aturan yang sama: hapus whitespace, lalu ubah ke huruf kecil sebelum validasi/penyimpanan.
 - Kata sandi minimal 8 karakter dan selalu disimpan melalui hashing Laravel.
 - Setelah registrasi, redirect ke login dengan pesan sukses dan email melalui flash session. Jangan login otomatis.
 - Login dibatasi 5 percobaan per menit. Registrasi dibatasi 3 percobaan per jam per alamat IP.
 - Admin diarahkan ke `/admin`; petani diarahkan ke `/dashboard`.
 - Petani yang membuka route admin menerima `403 Forbidden`. Admin yang membuka dashboard petani dialihkan ke panel admin.
 - Middleware akun aktif harus memblokir login dan request berikutnya dari akun nonaktif. Saat diblokir, hapus session autentikasi dengan aman.
-- Hanya seeder yang boleh membuat admin. Panel admin tidak boleh menampilkan atau menerima perubahan role.
+- Hanya seeder yang boleh membuat admin. Petani membuat akun sendiri melalui registrasi.
+- Panel admin hanya boleh membaca daftar/detail akun petani dan mengubah `is_active` setelah konfirmasi. Jangan sediakan endpoint untuk membuat atau menghapus akun petani, maupun mengubah `name`, `email`, `password`, atau `role` mereka.
+- Perubahan status hanya boleh menargetkan akun berperan petani. Penonaktifan tidak menghapus riwayat data; middleware akun aktif harus menolak sesi petani pada permintaan berikutnya.
 - Gunakan policy untuk `Land`, `PlantingSeason`, `Activity`, dan `Harvest`. Pemeriksaan harus menelusuri pemilik sampai `users.id`; menyembunyikan tombol bukan otorisasi.
 - Query halaman petani harus dimulai dari user yang sedang login atau dibatasi dengan foreign key pemilik. Jangan mengambil resource global lalu hanya mengandalkan ID dari URL.
 
@@ -160,7 +162,8 @@ Tambahkan Feature test untuk perilaku yang berubah. Prioritaskan alur dan batas 
 - registrasi, normalisasi email, unique email, password minimal, flash email, dan rate limit;
 - login, logout, redirect berdasarkan role, akun nonaktif, dan rate limit;
 - petani mendapat `403` pada panel admin dan admin dialihkan dari dashboard petani;
-- admin dapat mengelola status/data petani tetapi tidak dapat mengubah role;
+- admin dapat melihat daftar/detail petani dan mengubah status akses setelah konfirmasi, tetapi tidak dapat membuat, menghapus, atau mengubah identitas maupun peran akun;
+- perubahan status hanya menargetkan petani, tidak menghapus riwayat pertanian, dan memblokir sesi akun yang dinonaktifkan pada permintaan berikutnya;
 - petani hanya dapat mengakses lahan, musim, kegiatan, dan panen miliknya;
 - validasi tanggal, angka positif, status, dan satuan;
 - larangan menghapus lahan yang masih memiliki musim;

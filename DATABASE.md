@@ -38,9 +38,9 @@ Kolom `created_at` dan `updated_at` mengikuti konvensi pada bagian 1 dan berlaku
 | `role` | `ENUM('admin','petani')` | Tidak | Default `petani`; hanya seeder yang membuat `admin`. |
 | `is_active` | `BOOLEAN` | Tidak | Default `TRUE`; `FALSE` menolak login. |
 
-Indeks: `PRIMARY KEY (id)` dan `UNIQUE (email)`. Sebelum disimpan atau dipakai untuk login dan pengecekan keunikan, email dihapus spasinya lalu diubah menjadi huruf kecil. Normalisasi yang sama berlaku ketika admin membuat atau mengubah akun. Formulir registrasi dan panel admin tidak boleh menerima perubahan `role` dari input pengguna.
+Indeks: `PRIMARY KEY (id)` dan `UNIQUE (email)`. Sebelum disimpan atau dipakai untuk login dan pengecekan keunikan, email dihapus spasinya lalu diubah menjadi huruf kecil. Dalam MVP, akun petani dibuat melalui registrasi mandiri; panel admin tidak menerima perubahan nama, email, kata sandi, atau `role` dari input admin.
 
-Akun petani tidak dihapus permanen dalam MVP; admin mengubah `is_active`. Dengan begitu, riwayat lahannya tetap tersimpan. Akun admin awal dibuat melalui seeder.
+Akun petani tidak dihapus permanen dalam MVP; admin hanya dapat mengubah `is_active` setelah konfirmasi. Dengan begitu, riwayat lahannya tetap tersimpan. Akun admin awal dibuat melalui seeder.
 
 ### 3.2 `lands` — lahan milik petani
 
@@ -111,9 +111,9 @@ Saat menghapus lahan atau musim tanam, aplikasi harus memastikan bahwa pengguna 
 ## 5. Validasi dan Kebutuhan Operasional
 
 - `email` wajib unik setelah normalisasi. Simpan hasil normalisasi agar indeks unique di database menjadi pengaman terakhir terhadap duplikasi.
-- Kata sandi registrasi dan akun yang dibuat admin minimal 8 karakter sebelum di-hash. Kolom `password` menyimpan hasil hash Laravel.
+- Kata sandi registrasi minimal 8 karakter sebelum di-hash. Kolom `password` menyimpan hasil hash Laravel.
 - `area_hectares` dan `quantity` harus positif. `expected_harvest_at` tidak boleh lebih awal dari `planted_at`; `harvested_at` tidak boleh lebih awal dari `planted_at`.
-- `role` tidak dapat diedit lewat panel admin. Registrasi publik selalu menghasilkan `role = petani` dan `is_active = TRUE`.
+- Panel admin hanya dapat memperbarui `is_active` pada akun berperan `petani`; perubahan `name`, `email`, `password`, dan `role` tidak diterima. Registrasi publik selalu menghasilkan `role = petani` dan `is_active = TRUE`.
 - Akun dengan `is_active = FALSE` ditolak saat login. Apabila admin menonaktifkan akun yang sedang memiliki sesi, middleware juga harus menolak akses berikutnya.
 - Pembatasan login 5 percobaan per menit dan registrasi 3 percobaan per jam per IP dikelola oleh rate limiter Laravel. Ini adalah data sementara aplikasi, bukan tabel domain baru.
 - Flash session untuk mengisi email pada halaman login setelah registrasi merupakan data sesi sementara, bukan kolom `users`.
