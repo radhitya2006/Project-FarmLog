@@ -1,0 +1,1 @@
+<div class="admin-user-cell"><span class="admin-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr($farmer->name, 0, 1)) }}</span><div><strong>{{ $farmer->name }}</strong><span>{{ $farmer->email }}</span></div></div>

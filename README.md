@@ -37,9 +37,17 @@ Dokumentasi kebutuhan dan aturan implementasi tersedia di [PRD.md](PRD.md), [DAT
 
 ## Autentikasi (Tahap 2)
 
+Halaman login dan registrasi menggunakan font Plus Jakarta Sans serta Bootstrap Icons yang dipasang sebagai dependency npm agar font/ikon konsisten dan dapat dimuat secara lokal saat demo. CSS autentikasi berada di `resources/css/auth.css`. Setelah menarik perubahan dependency, jalankan `npm.cmd ci` lalu `npm.cmd run build`. Layout dua panel akan menjadi satu kolom pada layar kecil.
+
 Setelah menjalankan `npm.cmd run build` dan `php artisan serve`, buka `http://127.0.0.1:8000/login`. Pendaftaran tersedia melalui tautan **Daftar sekarang**. Akun baru selalu menjadi petani aktif; setelah mendaftar, pengguna kembali ke login dengan email terisi.
 
-Admin diarahkan ke `/admin`, petani ke `/dashboard`. Kedua halaman masih berupa halaman tujuan sementara; pengelolaan akun dan data pertanian dibuat pada tahap berikutnya. Keluar menggunakan tombol **Keluar** (POST dengan CSRF).
+Admin diarahkan ke `/admin`, petani ke `/dashboard`. Dashboard petani masih berupa halaman tujuan sementara. Keluar menggunakan tombol **Keluar** (POST dengan CSRF).
+
+## UI Panel Admin
+
+Panel admin menggunakan layout responsif dengan sidebar, font Plus Jakarta Sans, dan warna hijau FarmLog. Halaman `/admin` menampilkan jumlah petani aktif/nonaktif serta lima akun terbaru dari database. Menu **Akun Petani** (`/admin/users`) menyediakan pencarian nama/email, filter status, dan pagination 10 akun per halaman. MySQL perlu berjalan untuk membaca data tersebut.
+
+Halaman **Tambah petani**, **Edit akun**, dan dialog aktif/nonaktif masih berupa pratinjau UI. Tombol penyimpanan/konfirmasi sengaja dinonaktifkan; belum ada endpoint untuk membuat, mengubah, atau menghapus akun melalui panel admin. Formulir pratinjau tidak mengirim input, termasuk kata sandi. Login, logout, pencarian, dan navigasi sudah berfungsi. Untuk mencoba daftar berisi akun, gunakan akun hasil registrasi atau seeder yang sudah ada.
 
 Login dibatasi 5 permintaan per menit per IP, termasuk percobaan berhasil/gagal; registrasi dibatasi 3 permintaan per jam per IP, termasuk input tidak valid. Jika batas tercapai, server mengembalikan HTTP 429 beserta waktu tunggu. Kata sandi registrasi minimal 8 karakter dan dibatasi 72 byte sesuai batas bcrypt. Akun nonaktif tidak dapat login dan sesi yang sudah aktif akan dihentikan pada request berikutnya.
 
