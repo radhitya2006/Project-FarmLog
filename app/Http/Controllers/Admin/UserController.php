@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateUserStatusRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -35,15 +37,24 @@ class UserController extends Controller
         return view('admin.users.index', compact('farmers', 'search', 'status'));
     }
 
-    public function create(): View
-    {
-        return view('admin.users.create');
-    }
-
-    public function edit(User $user): View
+    public function show(User $user): View
     {
         abort_unless($user->role === UserRole::Farmer, 403);
 
-        return view('admin.users.edit', ['farmer' => $user]);
+        return view('admin.users.show', ['farmer' => $user]);
+    }
+
+    public function updateStatus(UpdateUserStatusRequest $request, User $user): RedirectResponse
+    {
+        $isActive = (bool) $request->validated('is_active');
+
+        if ($user->is_active !== $isActive) {
+            $user->is_active = $isActive;
+            $user->save();
+        }
+
+        return to_route('admin.users.show', $user)->with('success', $isActive
+            ? 'Akses akun petani aktif. Petani dapat masuk ke FarmLog.'
+            : 'Akses akun petani dinonaktifkan. Riwayat pertanian tetap tersimpan.');
     }
 }

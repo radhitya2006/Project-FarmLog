@@ -3,7 +3,7 @@
 @section('content')
 <div class="admin-page-heading">
     <div><p class="admin-eyebrow">PANEL ADMIN</p><h1>Selamat datang, {{ auth()->user()->name }}.</h1><p>Pantau akun petani dan kelola akses FarmLog dari sini.</p></div>
-    <a class="btn btn-success" href="{{ route('admin.users.create') }}"><i class="bi bi-plus-lg" aria-hidden="true"></i> Tambah petani</a>
+    <a class="btn btn-success" href="{{ route('admin.users.index') }}"><i class="bi bi-people" aria-hidden="true"></i> Lihat akun petani</a>
 </div>
 <div class="row g-3 admin-stats" aria-label="Ringkasan akun petani">
     @foreach ([['Total petani', $total, 'Semua akun petani terdaftar', 'bi-people', ''], ['Petani aktif', $active, 'Dapat masuk ke FarmLog', 'bi-person-check', 'green'], ['Petani nonaktif', $inactive, 'Akses masuk dinonaktifkan', 'bi-person-dash', 'amber']] as [$label, $value, $description, $icon, $tone])
@@ -11,7 +11,7 @@
     @endforeach
 </div>
 <div class="row g-4">
-    <div class="col-xl-8">
+    <div class="col-12">
         <section class="admin-card">
             <div class="admin-card-header"><div><h2>Petani terbaru</h2><p>Akun yang baru bergabung di FarmLog.</p></div><a class="admin-text-link" href="{{ route('admin.users.index') }}">Lihat semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
             @if ($recentFarmers->isEmpty())
@@ -21,12 +21,11 @@
                     <caption class="visually-hidden">Lima akun petani yang terakhir terdaftar</caption>
                     <thead><tr><th scope="col">Petani</th><th scope="col">Status</th><th scope="col">Bergabung</th><th scope="col"><span class="visually-hidden">Aksi</span></th></tr></thead>
                     <tbody>@foreach ($recentFarmers as $farmer)
-                        <tr><td>@include('admin.users.identity', ['farmer' => $farmer])</td><td><x-account-status :active="$farmer->is_active" /></td><td class="text-nowrap">{{ $farmer->created_at?->format('d/m/Y') ?? '—' }}</td><td><a class="admin-icon-button" href="{{ route('admin.users.edit', $farmer) }}" aria-label="Lihat akun {{ $farmer->name }}"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td></tr>
+                        <tr><td>@include('admin.users.identity', ['farmer' => $farmer])</td><td><x-account-status :active="$farmer->is_active" /></td><td class="text-nowrap">{{ $farmer->created_at?->format('d/m/Y') ?? '—' }}</td><td><a class="admin-icon-button" href="{{ route('admin.users.show', $farmer) }}" aria-label="Lihat detail {{ $farmer->name }}"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td></tr>
                     @endforeach</tbody>
                 </table></div>
             @endif
         </section>
     </div>
-    <div class="col-xl-4"><section class="admin-guide"><span class="admin-guide-icon"><i class="bi bi-person-gear" aria-hidden="true"></i></span><h2>Akses yang tepat<br>untuk setiap petani.</h2><p>Petani dapat mendaftar secara mandiri. Gunakan menu Akun Petani untuk melihat data dan status akun mereka.</p><a class="btn btn-outline-success" href="{{ route('admin.users.index') }}">Buka akun petani <i class="bi bi-arrow-right" aria-hidden="true"></i></a><div class="admin-guide-note"><i class="bi bi-database-check" aria-hidden="true"></i><span>Riwayat pertanian tetap tersimpan saat akun dinonaktifkan.</span></div></section></div>
 </div>
 @endsection

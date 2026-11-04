@@ -47,6 +47,16 @@
         </header>
         <main class="admin-content" id="admin-content" tabindex="-1">
             <x-flash-message />
+            @if ($errors->any())
+                <div class="alert alert-danger" role="alert">
+                    <p class="fw-semibold mb-1">Permintaan tidak dapat diproses.</p>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             @yield('content')
         </main>
         <footer class="admin-footer"><span>&copy; {{ date('Y') }} FarmLog</span><span>Manajemen Lahan Pertanian</span></footer>

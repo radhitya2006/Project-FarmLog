@@ -1,1 +1,0 @@
-<div class="admin-preview-notice" role="note"><i class="bi bi-info-circle" aria-hidden="true"></i><div><strong>Pratinjau pengelolaan akun</strong><p>Formulir dan dialog dapat ditinjau. Penyimpanan serta perubahan status akun belum tersedia.</p></div></div>

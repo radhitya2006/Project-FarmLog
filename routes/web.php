@@ -19,7 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
-        Route::resource('users', UserController::class)->only(['index', 'create', 'edit']);
+        Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])
+            ->whereNumber('user')->name('users.status');
+        Route::resource('users', UserController::class)->only(['index', 'show'])
+            ->where(['user' => '[0-9]+']);
     });
     Route::view('/dashboard', 'farmer.dashboard.index')->middleware('role:petani')->name('farmer.dashboard');
 });
