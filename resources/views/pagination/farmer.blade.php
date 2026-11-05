@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
-    <nav class="d-flex flex-wrap align-items-center justify-content-between gap-3" aria-label="Navigasi halaman lahan">
-        <p class="text-secondary mb-0">Menampilkan {{ $paginator->firstItem() }}–{{ $paginator->lastItem() }} dari {{ $paginator->total() }} lahan</p>
+    <nav class="d-flex flex-wrap align-items-center justify-content-between gap-3" aria-label="Navigasi halaman {{ $resourceLabel ?? 'lahan' }}">
+        <p class="text-secondary mb-0">Menampilkan {{ $paginator->firstItem() }}–{{ $paginator->lastItem() }} dari {{ $paginator->total() }} {{ $resourceLabel ?? 'lahan' }}</p>
         <ul class="pagination flex-wrap mb-0">
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled"><span class="page-link">Sebelumnya</span></li>

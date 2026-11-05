@@ -63,7 +63,11 @@ class OwnershipPolicyTest extends TestCase
             $this->assertFalse(Gate::forUser($owner)->allows('create', [$resource::class, $season]));
         }
         $this->assertTrue(Gate::forUser($owner)->allows('reopen', $season));
+        $this->assertTrue(Gate::forUser($owner)->allows('view', $season));
+        $this->assertTrue(Gate::forUser($owner)->allows('delete', $season));
+        $this->assertFalse(Gate::forUser($owner)->allows('update', $season));
         $season->update(['status' => PlantingSeasonStatus::Active]);
+        $this->assertTrue(Gate::forUser($owner)->allows('update', $season));
         foreach ([$activity, $harvest] as $resource) {
             $this->assertTrue(Gate::forUser($owner)->allows('update', $resource));
             $this->assertTrue(Gate::forUser($owner)->allows('create', [$resource::class, $season]));

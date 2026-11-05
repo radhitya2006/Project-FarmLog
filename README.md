@@ -49,9 +49,25 @@ Setelah login sebagai petani, buka **Lahan** pada sidebar atau `/lands`. Daftar 
 
 Pilih **Tambah lahan**, isi nama, luas dalam hektare, lokasi teks, dan catatan opsional. Luas harus 0,01–99.999.999,99 hektare dengan maksimal dua angka desimal; nama maksimal 150 karakter, lokasi 255 karakter, dan catatan 5.000 karakter. Setelah menyimpan, halaman detail menampilkan data dan jumlah musim tanam. **Edit lahan** menyimpan perubahan lalu kembali ke detail.
 
-**Hapus lahan** meminta konfirmasi dan hanya tersedia untuk lahan tanpa musim tanam. Server juga menolak penghapusan jika masih ada musim aktif maupun selesai. Pengelolaan musim tanam belum tersedia pada tahap ini. Data dan operasi CRUD dibatasi ke pemilik; petani lain mendapat respons 403, ID tidak ditemukan mendapat 404, dan admin diarahkan ke panel admin.
+**Hapus lahan** meminta konfirmasi dan hanya tersedia untuk lahan tanpa musim tanam. Server juga menolak penghapusan jika masih ada musim aktif maupun selesai. Data dan operasi CRUD dibatasi ke pemilik; petani lain mendapat respons 403, ID tidak ditemukan mendapat 404, dan admin diarahkan ke panel admin.
 
-Untuk mencoba alur, tambah lahan baru → lihat detail → edit → hapus melalui dialog konfirmasi. Coba pencarian dan akun tanpa lahan untuk melihat empty state. Data demo yang sudah memiliki musim tanam tidak dapat dihapus melalui menu ini. Tidak ada migration atau dependency baru yang diperlukan; jalankan `npm.cmd run build` untuk memuat aset terbaru.
+Untuk mencoba alur, tambah lahan baru → lihat detail → edit → hapus melalui dialog konfirmasi. Coba pencarian dan akun tanpa lahan untuk melihat empty state. Pada lahan yang memiliki musim tanam, hapus seluruh musim melalui menu Musim Tanam terlebih dahulu sebelum menghapus lahan. Jalankan `npm.cmd run build` untuk memuat aset terbaru.
+
+## Musim Tanam Petani
+
+Buka **Lahan → Lihat detail → Lihat musim tanam**. Daftar pada `/lands/{land}/planting-seasons` hanya menampilkan musim di lahan tersebut, dengan filter semua/aktif/selesai, urutan terbaru, dan pagination 12 musim. Tekan **Terapkan** setelah memilih status; **Reset** menghapus filter status.
+
+**Tambah musim tanam** tersedia dari detail lahan maupun daftar musim pada lahan tersebut. Lahan otomatis ditentukan dari halaman yang sedang dibuka. Petani yang belum memiliki lahan perlu menambah lahan melalui menu **Lahan** terlebih dahulu.
+
+Sidebar petani memiliki dua menu: **Dashboard** dan **Lahan**. Menu Lahan tetap aktif saat membuka daftar, detail, tambah, atau edit musim tanam. Tautan kembali membawa pengguna ke daftar musim pada lahan tersebut atau detail lahannya. Seluruh endpoint musim memakai lahan sebagai induk; tidak ada perubahan skema database.
+
+Isi komoditas (maksimal 150 karakter), tanggal tanam, perkiraan panen, dan catatan opsional (maksimal 5.000 karakter). Perkiraan panen tidak boleh sebelum tanggal tanam. Musim baru selalu aktif; satu lahan boleh memiliki beberapa musim aktif. Setelah simpan atau edit, pengguna kembali ke detail musim yang menampilkan informasi dan jumlah kegiatan/panen. Tanggal tanam tidak dapat digeser melewati tanggal panen yang sudah tercatat.
+
+**Selesaikan musim** mengunci edit informasi musim serta perubahan kegiatan/panen. **Aktifkan kembali** membuka penguncian tersebut. Kedua aksi membutuhkan konfirmasi dan menggunakan endpoint `PATCH .../{planting_season}/finish` atau `/reopen`. Permintaan berulang pada status yang sama tidak mengubah data. Form tambah/edit tidak menerima `status`, `land_id`, atau `user_id`.
+
+**Hapus musim tanam** tersedia untuk musim aktif maupun selesai. Dialog menjelaskan jumlah kegiatan dan catatan panen yang ikut dihapus permanen; server mensyaratkan konfirmasi. Setelah hapus, pengguna kembali ke daftar musim. Jika seluruh musim pada lahan sudah dihapus, lahan dapat dihapus. Musim milik petani lain ditolak dengan 403; pasangan lahan–musim yang tidak cocok mendapat 404.
+
+Untuk mencoba alur: tambah musim → edit informasi → selesaikan → pastikan edit terkunci → aktifkan kembali → hapus setelah konfirmasi. CRUD kegiatan dan panen belum tersedia; data demo yang sudah ada tetap dihitung pada detail musim. Tidak diperlukan migration atau dependency baru. Pengujian otomatis menggunakan `farm_log_test`, termasuk cascade penghapusan dan perlindungan kepemilikan.
 
 ## UI Panel Admin
 

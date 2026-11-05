@@ -113,7 +113,9 @@ Setiap musim tanam harus terhubung ke satu lahan. Data minimum musim tanam terdi
 - status `aktif` atau `selesai`; dan
 - catatan opsional.
 
-Petani dapat membuat, melihat, mengubah, menghapus, menyelesaikan, dan mengaktifkan kembali musim tanam. Penghapusan musim tanam harus dikonfirmasi dan turut menghapus kegiatan serta panen yang terkait. Musim yang sudah selesai tetap dapat dilihat sebagai riwayat. Data kegiatan dan panen pada musim selesai tidak dapat ditambah atau diubah sebelum musim diaktifkan kembali.
+Petani mengakses musim tanam melalui **Lahan → Detail lahan → Musim tanam**. Sidebar petani hanya menyediakan Dashboard dan Lahan; musim tanam menjadi bagian dari lahan yang dipilih. Daftar musim menampilkan musim pada lahan tersebut dengan filter status dan pagination. Petani dapat membuat, melihat, mengubah, menghapus, menyelesaikan, dan mengaktifkan kembali musim tanam. Musim baru selalu berstatus aktif; satu lahan boleh memiliki beberapa musim aktif. Perubahan status dan penghapusan harus dikonfirmasi. Penghapusan musim turut menghapus kegiatan serta panen yang terkait.
+
+Musim yang sudah selesai tetap dapat dilihat sebagai riwayat. Informasi musim tidak dapat diedit dan kegiatan/panen tidak dapat ditambah, diubah, atau dihapus sebelum musim diaktifkan kembali. Penghapusan seluruh musim beserta data turunannya tetap diperbolehkan setelah konfirmasi. Perubahan tanggal tanam tidak boleh membuat tanggal panen yang sudah tercatat menjadi lebih awal dari tanggal tanam.
 
 ### 4.6 Pengelolaan Kegiatan
 
@@ -329,7 +331,7 @@ MVP dianggap selesai apabila:
 14. Satu musim tanam dapat memiliki beberapa kegiatan dan catatan panen.
 15. Total panen dijumlahkan dengan benar dan dipisahkan berdasarkan satuan.
 16. Penghapusan musim tanam meminta konfirmasi, menghapus kegiatan dan panen terkait, serta memungkinkan lahan tanpa musim tanam untuk dihapus.
-17. Musim tanam yang selesai tetap tampil dan tidak menerima perubahan kegiatan atau panen sampai diaktifkan kembali.
+17. Musim tanam yang selesai tetap tampil, tetapi informasi musim dan kegiatan/panen terkunci sampai diaktifkan kembali; penghapusan seluruh musim tetap tersedia setelah konfirmasi.
 
 ## 12. Asumsi dan Batasan
 

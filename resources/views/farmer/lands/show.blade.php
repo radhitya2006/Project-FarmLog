@@ -14,7 +14,14 @@
         </dl></section>
     </div>
     <div class="col-lg-4">
-        <section class="farmer-panel farmer-season-summary"><span class="farmer-feature-icon"><i class="bi bi-flower1" aria-hidden="true"></i></span><h2>Musim tanam</h2><p><strong>{{ $land->planting_seasons_count }}</strong> musim tercatat di lahan ini.</p><p class="text-secondary small mb-0">Pengelolaan musim tanam akan tersedia pada tahap berikutnya.</p></section>
+        <section class="farmer-panel farmer-season-summary">
+            <span class="farmer-feature-icon"><i class="bi bi-flower1" aria-hidden="true"></i></span>
+            <h2>Musim tanam</h2><p><strong>{{ $land->planting_seasons_count }}</strong> musim tercatat di lahan ini.</p>
+            <div class="d-flex flex-column gap-2">
+                <a class="btn btn-success" href="{{ route('farmer.lands.planting-seasons.index', $land) }}">Lihat musim tanam</a>
+                <a class="btn btn-outline-success" href="{{ route('farmer.lands.planting-seasons.create', $land) }}"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Tambah musim tanam</a>
+            </div>
+        </section>
         <section class="farmer-panel farmer-delete-panel mt-4"><h2>Hapus lahan</h2>
             @if($land->planting_seasons_count > 0)
                 <p id="delete-help">Lahan masih memiliki musim tanam. Seluruh musim tanam harus dihapus terlebih dahulu, termasuk musim yang sudah selesai.</p><button class="btn btn-outline-danger" type="button" disabled aria-describedby="delete-help">Hapus lahan</button>

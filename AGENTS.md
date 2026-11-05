@@ -141,7 +141,9 @@ Jangan membuat repository layer untuk membungkus Eloquent atau service untuk set
 - Akun petani dinonaktifkan dengan `is_active`; jangan hapus permanen akun dalam MVP.
 - Lahan tidak dapat dihapus selama masih memiliki musim tanam.
 - Penghapusan musim tanam harus dikonfirmasi dan ikut menghapus kegiatan serta panen terkait.
-- Musim `selesai` tetap dapat dibaca. Blokir penambahan/perubahan kegiatan dan panen sampai musim diaktifkan kembali.
+- Musim baru selalu berstatus `aktif` dari server. Perubahan status hanya melalui aksi `finish`/`reopen` dengan konfirmasi; satu lahan boleh memiliki beberapa musim aktif.
+- Musim `selesai` tetap dapat dibaca. Blokir edit informasi musim serta penambahan/perubahan/penghapusan kegiatan dan panen sampai musim diaktifkan kembali. Penghapusan seluruh musim beserta turunannya tetap tersedia setelah konfirmasi.
+- Tolak perubahan tanggal tanam yang membuat panen yang sudah tercatat berada sebelum tanggal tanam baru.
 - `area_hectares` dan `quantity` wajib lebih dari nol. Perkiraan panen tidak boleh sebelum tanggal tanam; tanggal panen tidak boleh sebelum tanggal tanam.
 - Satuan panen MVP hanya `kg` dan `ton`. Simpan serta jumlahkan secara terpisah; jangan mengonversi atau menjumlahkan dua satuan secara langsung.
 - Tambahkan indeks berdasarkan `DATABASE.md`. Jangan menambah kolom turunan seperti total panen karena nilainya dapat dihitung dari data sumber.

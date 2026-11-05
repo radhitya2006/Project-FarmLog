@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PlantingSeasonStatus;
 use App\Models\Land;
 use App\Models\PlantingSeason;
 use App\Models\User;
@@ -26,7 +27,7 @@ class PlantingSeasonPolicy
 
     public function update(User $user, PlantingSeason $season): bool
     {
-        return $this->view($user, $season);
+        return $this->view($user, $season) && $season->status === PlantingSeasonStatus::Active;
     }
 
     public function delete(User $user, PlantingSeason $season): bool

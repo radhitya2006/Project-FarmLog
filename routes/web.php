@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Farmer\LandController;
+use App\Http\Controllers\Farmer\PlantingSeasonController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => to_route('login'))->name('home');
@@ -28,5 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::name('farmer.')->middleware('role:petani')->group(function () {
         Route::view('/dashboard', 'farmer.dashboard.index')->name('dashboard');
         Route::resource('lands', LandController::class)->where(['land' => '[0-9]+']);
+        Route::scopeBindings()->group(function () {
+            Route::patch('/lands/{land}/planting-seasons/{planting_season}/finish', [PlantingSeasonController::class, 'finish'])
+                ->whereNumber(['land', 'planting_season'])->name('lands.planting-seasons.finish');
+            Route::patch('/lands/{land}/planting-seasons/{planting_season}/reopen', [PlantingSeasonController::class, 'reopen'])
+                ->whereNumber(['land', 'planting_season'])->name('lands.planting-seasons.reopen');
+            Route::resource('lands.planting-seasons', PlantingSeasonController::class)
+                ->where(['land' => '[0-9]+', 'planting_season' => '[0-9]+']);
+        });
     });
 });

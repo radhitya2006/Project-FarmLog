@@ -1,5 +1,5 @@
-document.querySelectorAll('[data-land-form]').forEach((form) => {
-    const button = form.querySelector('[data-land-submit]');
+document.querySelectorAll('[data-land-form], [data-season-form]').forEach((form) => {
+    const button = form.querySelector('[data-land-submit], [data-season-submit]');
     const originalLabel = button.textContent;
 
     form.addEventListener('submit', (event) => {

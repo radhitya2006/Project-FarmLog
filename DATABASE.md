@@ -69,7 +69,7 @@ Relasi: `lands.user_id` → `users.id`, dengan `ON DELETE RESTRICT`. Indeks `lan
 
 Relasi: `planting_seasons.land_id` → `lands.id`, dengan `ON DELETE RESTRICT`. Indeks `planting_seasons(land_id, status)` mendukung daftar dan ringkasan musim aktif per lahan.
 
-Musim `selesai` tetap disimpan sebagai riwayat dan dapat diaktifkan kembali. Kegiatan atau panen dalam musim tersebut tidak dapat ditambah atau diubah sebelum statusnya kembali `aktif`. Penghapusan musim tanam memerlukan konfirmasi aplikasi dan secara otomatis menghapus kegiatan serta panen yang terkait melalui aturan foreign key di bawah.
+Musim baru dibuat dengan status `aktif` oleh server; satu lahan boleh memiliki beberapa musim aktif. Musim `selesai` tetap disimpan sebagai riwayat dan dapat diaktifkan kembali setelah konfirmasi. Informasi musim selesai tidak dapat diedit, dan kegiatan/panen tidak dapat ditambah, diubah, atau dihapus sampai statusnya kembali `aktif`. Penghapusan seluruh musim tetap diperbolehkan setelah konfirmasi dan secara otomatis menghapus kegiatan serta panen terkait melalui foreign key. Perubahan tanggal tanam harus ditolak jika ada catatan panen sebelum tanggal tanam baru. Aturan ini diterapkan di aplikasi tanpa perubahan skema.
 
 ### 3.4 `activities` — kegiatan pertanian
 
