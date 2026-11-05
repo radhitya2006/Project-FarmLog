@@ -1,0 +1,102 @@
+.farmer-shell { font-family: 'Plus Jakarta Sans Variable', sans-serif; color: #24382b; background: #f7f9f4; min-height: 100vh; }
+.farmer-sidebar { --bs-offcanvas-width: 264px; color: #fff; background: #154e32 !important; display: flex; flex-direction: column; }
+.farmer-brand-row { display: flex; align-items: center; justify-content: space-between; padding: 32px 24px; }
+.farmer-brand { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 27px; font-weight: 750; text-decoration: none; }
+.farmer-brand > i { padding: 8px 12px; border: 1px solid #ffffff30; border-radius: 12px; font-size: 25px; }
+.farmer-brand > span > span { color: #b6db92; }
+.farmer-sidebar-body { padding: 16px; flex: 1; }
+.farmer-nav-label { color: #b5cbb8; font-size: 11px; letter-spacing: 1.8px; padding: 0 14px; }
+.farmer-nav { display: grid; gap: 8px; }
+.farmer-nav a { display: flex; align-items: center; gap: 14px; padding: 15px; color: #e0eadf; text-decoration: none; border-radius: 10px; font-size: 14px; }
+.farmer-nav a:hover, .farmer-nav a.is-active { background: #ffffff16; color: #fff; }
+.farmer-nav a.is-active { box-shadow: inset 3px 0 #c3dc94; }
+.farmer-sidebar-note { margin: 54px 14px 24px; color: #c3d5c6; font-size: 12px; line-height: 1.9; }
+.farmer-sidebar-note > i { display: block; font-size: 28px; margin-bottom: 12px; color: #bdd894; }
+.farmer-sidebar-note strong { display: block; font-size: 18px; line-height: 1.6; margin-bottom: 12px; color: #fff; }
+.farmer-sidebar-bottom { padding: 20px 24px; border-top: 1px solid #ffffff20; }
+.farmer-identity { display: flex; gap: 12px; align-items: center; }
+.farmer-avatar { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #ffffff20; flex-shrink: 0; }
+.farmer-identity strong, .farmer-identity div > span { display: block; font-size: 13px; overflow-wrap: anywhere; }
+.farmer-identity div > span { color: #bdd0c0; font-size: 11px; margin-top: 3px; }
+.farmer-logout { background: transparent; color: #d4e4d5; border: 0; padding: 12px 0; margin-top: 12px; font-size: 13px; display: flex; gap: 12px; align-items: center; }
+.farmer-workspace { min-height: 100vh; display: flex; flex-direction: column; min-width: 0; }
+.farmer-topbar { min-height: 84px; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border-bottom: 1px solid #e4e9df; }
+.farmer-topbar .breadcrumb { font-size: 12px; }
+.farmer-topbar a { text-decoration: none; }
+.farmer-role { align-items: center; gap: 8px; color: #42643b; background: #edf3e7; padding: 8px 12px; border-radius: 20px; font-size: 12px; }
+.farmer-content { padding: 36px 40px; flex: 1; width: 100%; max-width: 1536px; margin: auto; }
+.farmer-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 20px 40px; color: #697662; font-size: 11px; }
+.farmer-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.farmer-page-heading > div { min-width: 0; }
+.farmer-page-heading h1 { font-size: clamp(26px, 2.5vw, 34px); letter-spacing: -1px; font-weight: 700; overflow-wrap: anywhere; }
+.farmer-page-heading p:not(.farmer-eyebrow) { color: #65735f; font-size: 14px; line-height: 1.8; margin: 10px 0 0; }
+.farmer-eyebrow { color: #6b7e5a; font-size: 10px; font-weight: 700; letter-spacing: 1.8px; margin-bottom: 12px; }
+.farmer-shell .btn { font-size: 13px; border-radius: 9px; padding: 11px 17px; flex-shrink: 0; }
+.farmer-shell .btn-outline-success { --bs-btn-color: #25663b; --bs-btn-border-color: #bad0b4; --bs-btn-hover-bg: #166534; --bs-btn-hover-border-color: #166534; }
+.farmer-panel { background: #fff; border: 1px solid #e0e7d9; border-radius: 16px; }
+.farmer-search { display: flex; gap: 12px; padding: 18px; margin-bottom: 22px; }
+.farmer-shell .form-control { font-size: 14px; border-color: #cfd9ca; border-radius: 8px; padding: 12px; }
+.farmer-shell .form-label { font-size: 13px; }
+.farmer-shell .form-text { font-size: 12px; }
+.farmer-result-count { font-size: 12px; color: #64765c; margin-bottom: 18px; overflow-wrap: anywhere; }
+.land-card { display: flex; flex-direction: column; padding: 24px; }
+.land-card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 22px; }
+.farmer-feature-icon { display: inline-grid; place-items: center; width: 50px; height: 50px; background: #edf3e5; color: #527449; border-radius: 14px; font-size: 24px; flex-shrink: 0; }
+.land-season-count { color: #627456; background: #f4f7ef; padding: 6px 9px; border-radius: 6px; font-size: 11px; }
+.land-card h2 { font-size: 18px; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+.land-location { display: flex; gap: 8px; color: #6a7763; font-size: 12px; line-height: 1.8; margin: 6px 0 24px; overflow-wrap: anywhere; }
+.land-location span { min-width: 0; }
+.land-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: auto; padding-top: 18px; border-top: 1px solid #e8ece4; }
+.land-area-label { display: block; color: #72806a; font-size: 11px; margin-bottom: 4px; }
+.land-card-bottom strong { font-size: 19px; }
+.land-card-bottom small { font-size: 12px; font-weight: 500; }
+.farmer-empty-state { padding: 64px 24px; text-align: center; }
+.farmer-empty-state h2 { font-size: 21px; font-weight: 650; margin-top: 22px; }
+.farmer-empty-state p { max-width: 440px; margin: 12px auto 24px; color: #6a7763; font-size: 14px; line-height: 1.8; }
+.farmer-pagination .pagination { --bs-pagination-color: #31633d; --bs-pagination-active-bg: #166534; --bs-pagination-active-border-color: #166534; --bs-pagination-focus-box-shadow: 0 0 0 3px #16653422; }
+.farmer-pagination .page-link { min-height: 44px; display: grid; place-items: center; }
+.farmer-pagination p { font-size: 12px; }
+.farmer-back-link { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 12px; margin-bottom: 24px; }
+.farmer-back-link:hover { text-decoration: underline; }
+.farmer-form { max-width: 920px; padding: 32px; }
+.farmer-form-actions { display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid #e4e9df; padding-top: 24px; margin-top: 32px; }
+.farmer-details, .farmer-season-summary, .farmer-delete-panel { padding: 28px; }
+.farmer-details h2, .farmer-season-summary h2, .farmer-delete-panel h2 { font-size: 18px; font-weight: 650; }
+.farmer-details dl > div { padding: 20px 0; border-bottom: 1px solid #e8ece4; }
+.farmer-details dl > div:last-child { border: 0; padding-bottom: 0; }
+.farmer-details dt { color: #64745c; font-size: 12px; margin-bottom: 10px; font-weight: 500; }
+.farmer-details dd { font-size: 14px; line-height: 1.9; margin: 0; overflow-wrap: anywhere; }
+.land-notes { white-space: pre-wrap; }
+.farmer-season-summary h2 { margin-top: 20px; }
+.farmer-season-summary p, .farmer-delete-panel p { font-size: 13px; line-height: 1.9; color: #64745c; }
+.farmer-delete-panel { border-color: #eadbd6; }
+.farmer-welcome { padding: 36px; background: #edf4e6; }
+.farmer-welcome h2 { font-size: 26px; font-weight: 650; margin-top: 22px; }
+.farmer-welcome p { max-width: 560px; color: #5d7152; line-height: 1.9; font-size: 14px; margin: 16px 0 24px; }
+.farmer-shell .modal-content { border: 0; border-radius: 16px; }
+.farmer-shell .modal-body { line-height: 1.9; font-size: 14px; }
+.farmer-skip-link { position: fixed; top: 10px; left: 10px; z-index: 1100; background: #fff; padding: 12px; transform: translateY(-160%); }
+.farmer-skip-link:focus { transform: translateY(0); }
+.farmer-shell a:focus-visible, .farmer-shell button:focus-visible { outline: 3px solid #8caf73; outline-offset: 3px; }
+@media (min-width: 992px) {
+    .farmer-shell .farmer-sidebar { position: fixed; inset: 0 auto 0 0; width: 264px; height: 100vh; overflow-y: auto; z-index: 1020; }
+    .farmer-workspace { margin-left: 264px; }
+}
+@media (max-width: 991.98px) {
+    .farmer-sidebar { overflow-y: auto; }
+    .farmer-topbar, .farmer-footer { padding: 16px 24px; }
+    .farmer-content { padding: 28px 24px; }
+    .farmer-sidebar-note { margin-top: 32px; }
+}
+@media (max-width: 575.98px) {
+    .farmer-topbar { padding: 12px; min-height: 72px; }
+    .farmer-topbar .breadcrumb { font-size: 11px; }
+    .farmer-content { padding: 24px 16px; }
+    .farmer-page-heading { flex-direction: column; align-items: flex-start; gap: 18px; }
+    .farmer-search { flex-wrap: wrap; padding: 14px; }
+    .farmer-search > div { flex-basis: 100%; }
+    .farmer-form, .farmer-details, .farmer-season-summary, .farmer-delete-panel, .land-card { padding: 22px; }
+    .farmer-form-actions { flex-wrap: wrap; }
+    .farmer-welcome { padding: 26px; }
+    .farmer-footer { padding: 20px 16px; }
+}

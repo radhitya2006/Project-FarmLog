@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Farmer\LandController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => to_route('login'))->name('home');
@@ -24,5 +25,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class)->only(['index', 'show'])
             ->where(['user' => '[0-9]+']);
     });
-    Route::view('/dashboard', 'farmer.dashboard.index')->middleware('role:petani')->name('farmer.dashboard');
+    Route::name('farmer.')->middleware('role:petani')->group(function () {
+        Route::view('/dashboard', 'farmer.dashboard.index')->name('dashboard');
+        Route::resource('lands', LandController::class)->where(['land' => '[0-9]+']);
+    });
 });

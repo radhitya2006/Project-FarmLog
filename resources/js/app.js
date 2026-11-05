@@ -1,5 +1,6 @@
 import 'bootstrap';
 import './admin';
+import './lands';
 
 document.querySelectorAll('[data-password-toggle]').forEach((button) => {
     button.addEventListener('click', () => {

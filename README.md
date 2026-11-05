@@ -41,7 +41,17 @@ Halaman login dan registrasi menggunakan font Plus Jakarta Sans serta Bootstrap 
 
 Setelah menjalankan `npm.cmd run build` dan `php artisan serve`, buka `http://127.0.0.1:8000/login`. Pendaftaran tersedia melalui tautan **Daftar sekarang**. Akun baru selalu menjadi petani aktif; setelah mendaftar, pengguna kembali ke login dengan email terisi.
 
-Admin diarahkan ke `/admin`, petani ke `/dashboard`. Dashboard petani masih berupa halaman tujuan sementara. Keluar menggunakan tombol **Keluar** (POST dengan CSRF).
+Admin diarahkan ke `/admin`, petani ke `/dashboard`. Dashboard petani menyediakan tautan ke menu Lahan; ringkasan pertanian lengkap akan ditambahkan pada tahap berikutnya. Keluar menggunakan tombol **Keluar** (POST dengan CSRF).
+
+## Menu Lahan Petani
+
+Setelah login sebagai petani, buka **Lahan** pada sidebar atau `/lands`. Daftar menggunakan kartu, pencarian nama/lokasi, dan pagination 12 lahan per halaman dengan urutan terbaru. Sidebar berubah menjadi menu yang dapat dibuka pada layar ponsel.
+
+Pilih **Tambah lahan**, isi nama, luas dalam hektare, lokasi teks, dan catatan opsional. Luas harus 0,01–99.999.999,99 hektare dengan maksimal dua angka desimal; nama maksimal 150 karakter, lokasi 255 karakter, dan catatan 5.000 karakter. Setelah menyimpan, halaman detail menampilkan data dan jumlah musim tanam. **Edit lahan** menyimpan perubahan lalu kembali ke detail.
+
+**Hapus lahan** meminta konfirmasi dan hanya tersedia untuk lahan tanpa musim tanam. Server juga menolak penghapusan jika masih ada musim aktif maupun selesai. Pengelolaan musim tanam belum tersedia pada tahap ini. Data dan operasi CRUD dibatasi ke pemilik; petani lain mendapat respons 403, ID tidak ditemukan mendapat 404, dan admin diarahkan ke panel admin.
+
+Untuk mencoba alur, tambah lahan baru → lihat detail → edit → hapus melalui dialog konfirmasi. Coba pencarian dan akun tanpa lahan untuk melihat empty state. Data demo yang sudah memiliki musim tanam tidak dapat dihapus melalui menu ini. Tidak ada migration atau dependency baru yang diperlukan; jalankan `npm.cmd run build` untuk memuat aset terbaru.
 
 ## UI Panel Admin
 
