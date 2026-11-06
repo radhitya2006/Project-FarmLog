@@ -92,6 +92,13 @@
 .season-count strong, .season-count span { display: block; }
 .season-count strong { font-size: 24px; }
 .season-count span { font-size: 12px; color: #64745c; }
+.activity-context { color: #64745c; font-size: 13px; line-height: 1.9; overflow-wrap: anywhere; margin-bottom: 24px; }
+.activity-table { vertical-align: middle; min-width: 560px; }
+.activity-table th { padding: 18px 24px; color: #64745c; font-size: 12px; font-weight: 600; background: #f4f7ef; }
+.activity-table td { padding: 18px 24px; font-size: 13px; color: #24382b; border-color: #e8ece4; }
+.activity-table .activity-name { min-width: 180px; max-width: 350px; overflow-wrap: anywhere; font-weight: 600; }
+.activity-table tr:last-child td { border-bottom: 0; }
+.activity-table th:last-child, .activity-table td:last-child { text-align: right; }
 .farmer-shell a:focus-visible, .farmer-shell button:focus-visible { outline: 3px solid #8caf73; outline-offset: 3px; }
 @media (min-width: 992px) {
     .farmer-shell .farmer-sidebar { position: fixed; inset: 0 auto 0 0; width: 264px; height: 100vh; overflow-y: auto; z-index: 1020; }

@@ -67,7 +67,19 @@ Isi komoditas (maksimal 150 karakter), tanggal tanam, perkiraan panen, dan catat
 
 **Hapus musim tanam** tersedia untuk musim aktif maupun selesai. Dialog menjelaskan jumlah kegiatan dan catatan panen yang ikut dihapus permanen; server mensyaratkan konfirmasi. Setelah hapus, pengguna kembali ke daftar musim. Jika seluruh musim pada lahan sudah dihapus, lahan dapat dihapus. Musim milik petani lain ditolak dengan 403; pasangan lahan–musim yang tidak cocok mendapat 404.
 
-Untuk mencoba alur: tambah musim → edit informasi → selesaikan → pastikan edit terkunci → aktifkan kembali → hapus setelah konfirmasi. CRUD kegiatan dan panen belum tersedia; data demo yang sudah ada tetap dihitung pada detail musim. Tidak diperlukan migration atau dependency baru. Pengujian otomatis menggunakan `farm_log_test`, termasuk cascade penghapusan dan perlindungan kepemilikan.
+Untuk mencoba alur: tambah musim → edit informasi → selesaikan → pastikan edit terkunci → aktifkan kembali → hapus setelah konfirmasi. Pengelolaan kegiatan sudah tersedia; pencatatan panen belum tersedia. Data demo yang sudah ada tetap dihitung pada detail musim. Tidak diperlukan migration atau dependency baru. Pengujian otomatis menggunakan `farm_log_test`, termasuk cascade penghapusan dan perlindungan kepemilikan.
+
+## Kegiatan Pertanian
+
+Buka **Lahan → Detail lahan → Musim tanam → Detail musim → Lihat kegiatan**. Tombol **Tambah kegiatan** tersedia dari detail musim dan daftar kegiatan selama musim aktif. Kegiatan berada di dalam musim tanam; sidebar petani tetap berisi Dashboard dan Lahan.
+
+Formulir berisi nama kegiatan (maksimal 150 karakter), tanggal, status **Direncanakan**/**Selesai**, dan keterangan opsional (maksimal 5.000 karakter). Tanggal sebelum tanggal tanam diperbolehkan untuk persiapan lahan. Setelah simpan atau edit, petani diarahkan ke detail kegiatan. Daftar menyediakan pencarian nama, filter status, dan pagination 12 kegiatan per halaman; urutannya tanggal terbaru, lalu ID terbaru jika tanggal sama.
+
+Pada detail kegiatan, gunakan **Tandai selesai** untuk menyelesaikan kegiatan yang direncanakan. Permintaan ulang tidak mengubah waktu pembaruan. Status dapat dikembalikan ke **Direncanakan** melalui edit selama musim masih aktif. **Hapus kegiatan** meminta konfirmasi dan hanya menghapus kegiatan tersebut. Penghapusan kembali ke daftar kegiatan.
+
+Saat musim selesai, daftar dan detail kegiatan tetap bisa dibaca; tambah, edit, hapus, dan tandai selesai ditolak di server. Aktifkan kembali musim melalui detail musim untuk melanjutkan perubahan. Semua route berada di `/lands/{land}/planting-seasons/{planting_season}/activities`; aksi selesai menggunakan `PATCH .../{activity}/finish`. Pemilik dan musim ditentukan di server, bukan dari input formulir. Akses petani lain mendapat 403, sedangkan pasangan induk/resource yang tidak cocok atau tidak ditemukan mendapat 404.
+
+Untuk mencoba: tambah kegiatan → cari/filter di daftar → buka detail → tandai selesai → edit → hapus setelah konfirmasi. Coba juga menyelesaikan musim untuk memastikan kegiatan terkunci, lalu aktifkan kembali. Tidak diperlukan migration, seeder, atau dependency baru. Jalankan `npm.cmd run build` untuk memuat aset terbaru; seluruh pengujian database menggunakan `farm_log_test`.
 
 ## UI Panel Admin
 

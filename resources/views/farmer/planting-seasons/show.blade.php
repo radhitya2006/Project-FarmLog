@@ -20,6 +20,10 @@
         </dl></section>
         <section class="farmer-panel farmer-details mt-4"><h2>Catatan musim</h2>
             <div class="row g-3 mt-1"><div class="col-sm-6"><div class="season-count"><i class="bi bi-calendar-check" aria-hidden="true"></i><div><strong>{{ $season->activities_count }}</strong><span>kegiatan tercatat</span></div></div></div><div class="col-sm-6"><div class="season-count"><i class="bi bi-basket" aria-hidden="true"></i><div><strong>{{ $season->harvests_count }}</strong><span>catatan panen</span></div></div></div></div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a class="btn btn-outline-success" href="{{ route('farmer.lands.planting-seasons.activities.index', [$land, $season]) }}">Lihat kegiatan</a>
+                @can('create', [\App\Models\Activity::class, $season])<a class="btn btn-success" href="{{ route('farmer.lands.planting-seasons.activities.create', [$land, $season]) }}"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Tambah kegiatan</a>@endcan
+            </div>
         </section>
     </div>
     <div class="col-lg-4">

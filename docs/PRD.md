@@ -126,7 +126,7 @@ Kegiatan terhubung ke satu musim tanam. Contoh kegiatan meliputi penanaman, peny
 - keterangan opsional; dan
 - status `direncanakan` atau `selesai`.
 
-Petani dapat menambah, melihat, mengubah, menghapus, dan menandai kegiatan sebagai selesai.
+Petani membuka menu Kegiatan melalui detail musim tanam. Daftar hanya menampilkan kegiatan pada musim tersebut, dengan filter status, pencarian nama, dan pagination. Petani dapat menambah, melihat detail, mengubah, menghapus setelah konfirmasi, dan menandai kegiatan sebagai selesai. Formulir menyediakan status direncanakan atau selesai; kegiatan selesai dapat diperbaiki melalui formulir edit selama musim masih aktif. Tanggal kegiatan boleh sebelum tanggal tanam untuk pencatatan persiapan lahan. Pada musim selesai, kegiatan hanya dapat dibaca sampai musim diaktifkan kembali.
 
 ### 4.7 Pencatatan Panen
 
