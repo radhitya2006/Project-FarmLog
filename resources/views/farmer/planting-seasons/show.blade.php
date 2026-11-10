@@ -24,6 +24,11 @@
                 <a class="btn btn-outline-success" href="{{ route('farmer.lands.planting-seasons.activities.index', [$land, $season]) }}">Lihat kegiatan</a>
                 @can('create', [\App\Models\Activity::class, $season])<a class="btn btn-success" href="{{ route('farmer.lands.planting-seasons.activities.create', [$land, $season]) }}"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Tambah kegiatan</a>@endcan
             </div>
+            <h3 class="fs-6 mt-4 mb-3">Total panen musim</h3><x-harvest-summary :season="$season" />
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a class="btn btn-outline-success" href="{{ route('farmer.lands.planting-seasons.harvests.index', [$land, $season]) }}">Lihat hasil panen</a>
+                @can('create', [\App\Models\Harvest::class, $season])<a class="btn btn-success" href="{{ route('farmer.lands.planting-seasons.harvests.create', [$land, $season]) }}"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Catat panen</a>@endcan
+            </div>
         </section>
     </div>
     <div class="col-lg-4">

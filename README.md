@@ -45,11 +45,13 @@ Admin diarahkan ke `/admin`, petani ke `/dashboard`. Keluar menggunakan tombol *
 
 ## Dashboard Petani
 
-Dashboard menampilkan jumlah lahan dan musim aktif milik petani, beserta kartu musim yang sedang berjalan. Daftar dipaginasi 6 musim per halaman dengan tanggal tanam terbaru lebih dahulu (lalu ID terbaru untuk tanggal sama). Musim selesai dan data petani lain tidak ditampilkan.
+Dashboard menampilkan jumlah lahan, jumlah musim aktif, dan jumlah kegiatan yang belum selesai milik petani. Kartu musim aktif dipaginasi 6 musim per halaman dengan tanggal tanam terbaru lebih dahulu (lalu ID terbaru untuk tanggal sama). Musim selesai tidak masuk ke kartu aktif; data petani lain tidak ditampilkan pada seluruh bagian Dashboard.
 
-Tombol **Catat kegiatan** dan **Musim tanam aktif** membawa petani ke bagian musim aktif pada halaman Dashboard. Pilih kartu berdasarkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen. Setiap kartu menyediakan **Catat kegiatan** langsung ke formulir musim tersebut, **Detail musim**, serta **Lihat kegiatan**. Pagination mempertahankan posisi di bagian musim aktif. **Lahan saya** membuka daftar lahan.
+Tombol **Catat kegiatan**, **Catat panen**, dan **Musim tanam aktif** membawa petani ke bagian musim aktif pada halaman Dashboard. Pilih kartu berdasarkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen. Setiap kartu menyediakan formulir **Catat kegiatan** dan **Catat panen** untuk musim tersebut, **Detail musim**, serta **Lihat kegiatan**. **Lahan saya** membuka daftar lahan.
 
-Petani tanpa lahan mendapat arahan **Tambah lahan**. Petani yang sudah memiliki lahan tetapi belum memiliki musim aktif mendapat arahan **Buka lahan saya** untuk membuat atau mengaktifkan kembali musim. Tombol pencatatan cepat dinonaktifkan jika tidak ada musim aktif. Status musim dan kepemilikan tetap diperiksa pada halaman tujuan; musim yang sudah selesai tidak menerima kegiatan baru meskipun Dashboard sebelumnya masih menampilkannya. Sidebar tetap berisi Dashboard dan Lahan. Ringkasan kegiatan tertunda dan hasil panen akan ditambahkan terpisah.
+Petani tanpa lahan mendapat arahan **Tambah lahan**. Petani yang sudah memiliki lahan tetapi belum memiliki musim aktif mendapat arahan **Buka lahan saya** untuk membuat atau mengaktifkan kembali musim. Tombol pencatatan cepat dinonaktifkan jika tidak ada musim aktif. Status musim dan kepemilikan tetap diperiksa pada halaman tujuan; musim yang sudah selesai tidak menerima kegiatan atau panen baru meskipun Dashboard sebelumnya masih menampilkannya. Sidebar tetap berisi Dashboard dan Lahan.
+
+**Kegiatan belum selesai** menampilkan kegiatan direncanakan dari seluruh musim, termasuk musim selesai yang catatannya terkunci. Urutannya tanggal terlama lalu ID, dengan tautan langsung ke detail kegiatan. **Ringkasan hasil panen** menampilkan musim yang memiliki catatan panen, termasuk musim selesai, dengan total kg dan ton terpisah serta tautan ke daftar panen. Setiap bagian memuat 6 baris per halaman. Parameter `page`, `activities_page`, dan `harvest_page` berdiri sendiri, mempertahankan halaman bagian lainnya dan mengarahkan kembali ke bagian yang sesuai.
 
 ## Menu Lahan Petani
 
@@ -75,7 +77,7 @@ Isi komoditas (maksimal 150 karakter), tanggal tanam, perkiraan panen, dan catat
 
 **Hapus musim tanam** tersedia untuk musim aktif maupun selesai. Dialog menjelaskan jumlah kegiatan dan catatan panen yang ikut dihapus permanen; server mensyaratkan konfirmasi. Setelah hapus, pengguna kembali ke daftar musim. Jika seluruh musim pada lahan sudah dihapus, lahan dapat dihapus. Musim milik petani lain ditolak dengan 403; pasangan lahan–musim yang tidak cocok mendapat 404.
 
-Untuk mencoba alur: tambah musim → edit informasi → selesaikan → pastikan edit terkunci → aktifkan kembali → hapus setelah konfirmasi. Pengelolaan kegiatan sudah tersedia; pencatatan panen belum tersedia. Data demo yang sudah ada tetap dihitung pada detail musim. Tidak diperlukan migration atau dependency baru. Pengujian otomatis menggunakan `farm_log_test`, termasuk cascade penghapusan dan perlindungan kepemilikan.
+Untuk mencoba alur: tambah musim → edit informasi → catat kegiatan/panen → selesaikan → pastikan perubahan terkunci → aktifkan kembali → hapus setelah konfirmasi. Detail musim menampilkan jumlah kegiatan/panen dan total panen per satuan. Tidak diperlukan migration atau dependency baru. Pengujian otomatis menggunakan `farm_log_test`, termasuk cascade penghapusan dan perlindungan kepemilikan.
 
 ## Kegiatan Pertanian
 
@@ -88,6 +90,16 @@ Pada detail kegiatan, gunakan **Tandai selesai** untuk menyelesaikan kegiatan ya
 Saat musim selesai, daftar dan detail kegiatan tetap bisa dibaca; tambah, edit, hapus, dan tandai selesai ditolak di server. Aktifkan kembali musim melalui detail musim untuk melanjutkan perubahan. Semua route berada di `/lands/{land}/planting-seasons/{planting_season}/activities`; aksi selesai menggunakan `PATCH .../{activity}/finish`. Pemilik dan musim ditentukan di server, bukan dari input formulir. Akses petani lain mendapat 403, sedangkan pasangan induk/resource yang tidak cocok atau tidak ditemukan mendapat 404.
 
 Untuk mencoba: tambah kegiatan → cari/filter di daftar → buka detail → tandai selesai → edit → hapus setelah konfirmasi. Coba juga menyelesaikan musim untuk memastikan kegiatan terkunci, lalu aktifkan kembali. Tidak diperlukan migration, seeder, atau dependency baru. Jalankan `npm.cmd run build` untuk memuat aset terbaru; seluruh pengujian database menggunakan `farm_log_test`.
+
+## Hasil Panen
+
+Buka **Lahan → Detail lahan → Musim tanam → Detail musim → Lihat hasil panen**. **Catat panen** tersedia pada detail musim, daftar panen, serta kartu musim aktif di Dashboard. Form menerima tanggal panen, jumlah 0,01–9.999.999.999,99 dengan maksimal dua angka desimal, satuan kg/ton, serta catatan opsional maksimal 5.000 karakter. Tanggal panen tidak boleh sebelum tanggal tanam. Satu musim dapat memiliki beberapa catatan panen, termasuk pada tanggal yang sama.
+
+Daftar panen menampilkan seluruh satuan dengan pagination 12 catatan, diurutkan tanggal panen terbaru lalu ID. Total pada detail musim, daftar panen, dan Dashboard dihitung dari database per musim dan satuan. Kilogram dan ton tidak dikonversi atau dijumlahkan bersama. Total pada daftar panen mencakup seluruh catatan musim, tidak dipengaruhi halaman, dan tampilan angka mempertahankan presisi desimal.
+
+Simpan/edit kembali ke detail panen dengan pesan sukses. **Hapus catatan panen** meminta konfirmasi dan kembali ke daftar, tanpa menghapus musim atau catatan lain. Musim selesai tetap dapat dibaca, tetapi tambah/edit/hapus ditolak di server sampai diaktifkan kembali. Semua route panen berada di `/lands/{land}/planting-seasons/{planting_season}/harvests`; pemilik dan musim ditentukan dari server. Petani lain mendapat 403, resource yang tidak ditemukan atau pasangan lahan–musim–panen yang salah mendapat 404. Penulisan panen dan perubahan musim memakai penguncian musim dalam transaksi agar aturan status/tanggal tetap diperiksa saat penyimpanan.
+
+Untuk mencoba alur lengkap, daftar akun petani → login → tambah lahan → tambah musim → catat dan selesaikan kegiatan → catat beberapa panen kg/ton → lihat ringkasan Dashboard → selesaikan musim → periksa penguncian → aktifkan kembali. Penghapusan seluruh musim setelah konfirmasi menghapus kegiatan/panen turunannya dan memungkinkan lahan tanpa musim dihapus. Jalankan `php artisan test`, `php vendor/bin/pint --test`, dan `npm.cmd run build`. Tidak ada migration, dependency, atau perubahan kredensial yang diperlukan.
 
 ## UI Panel Admin
 

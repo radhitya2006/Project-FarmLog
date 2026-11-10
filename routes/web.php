@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Farmer\ActivityController;
 use App\Http\Controllers\Farmer\DashboardController as FarmerDashboardController;
+use App\Http\Controllers\Farmer\HarvestController;
 use App\Http\Controllers\Farmer\LandController;
 use App\Http\Controllers\Farmer\PlantingSeasonController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', FarmerDashboardController::class)->name('dashboard');
         Route::resource('lands', LandController::class)->where(['land' => '[0-9]+']);
         Route::scopeBindings()->group(function () {
+            Route::resource('lands.planting-seasons.harvests', HarvestController::class)
+                ->where(['land' => '[0-9]+', 'planting_season' => '[0-9]+', 'harvest' => '[0-9]+']);
             Route::patch('/lands/{land}/planting-seasons/{planting_season}/activities/{activity}/finish', [ActivityController::class, 'finish'])
                 ->whereNumber(['land', 'planting_season', 'activity'])->name('lands.planting-seasons.activities.finish');
             Route::resource('lands.planting-seasons.activities', ActivityController::class)

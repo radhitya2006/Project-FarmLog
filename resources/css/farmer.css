@@ -111,6 +111,11 @@
 .dashboard-season-card h3 { font-size: 18px; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
 .dashboard-season-actions { display: grid; grid-template-columns: minmax(0, 1fr); }
 .dashboard-season-actions .btn { white-space: normal; overflow-wrap: anywhere; }
+.harvest-total { background: #f4f7ef; border-radius: 12px; padding: 18px; overflow-wrap: anywhere; }
+.harvest-total > span { display: block; color: #64745c; font-size: 12px; margin-bottom: 8px; }
+.harvest-total strong { font-size: 20px; }
+.dashboard-table-context { display: block; font-size: 11px; color: #64745c; margin-top: 6px; font-weight: 400; overflow-wrap: anywhere; }
+.dashboard-section { scroll-margin-top: 24px; }
 .farmer-shell a:focus-visible, .farmer-shell button:focus-visible { outline: 3px solid #8caf73; outline-offset: 3px; }
 @media (min-width: 992px) {
     .farmer-shell .farmer-sidebar { position: fixed; inset: 0 auto 0 0; width: 264px; height: 100vh; overflow-y: auto; z-index: 1020; }

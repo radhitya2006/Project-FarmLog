@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class PlantingSeasonController extends Controller
@@ -55,7 +56,7 @@ class PlantingSeasonController extends Controller
     public function show(Land $land, PlantingSeason $plantingSeason): View
     {
         Gate::authorize('view', $plantingSeason);
-        $plantingSeason->loadCount(['activities', 'harvests']);
+        $plantingSeason = $land->plantingSeasons()->withHarvestTotals()->withCount(['activities', 'harvests'])->findOrFail($plantingSeason->id);
 
         return view('farmer.planting-seasons.show', ['land' => $land, 'season' => $plantingSeason]);
     }
@@ -72,6 +73,9 @@ class PlantingSeasonController extends Controller
         DB::transaction(function () use ($request, $land, $plantingSeason): void {
             $season = $land->plantingSeasons()->whereKey($plantingSeason->id)->lockForUpdate()->firstOrFail();
             Gate::authorize('update', $season);
+            if ($season->harvests()->whereDate('harvested_at', '<', $request->validated('planted_at'))->exists()) {
+                throw ValidationException::withMessages(['planted_at' => 'Tanggal tanam tidak boleh setelah tanggal panen yang sudah tercatat.']);
+            }
             $season->update($request->safe()->only(['crop_name', 'planted_at', 'expected_harvest_at', 'notes']));
         });
 

@@ -90,9 +90,11 @@ Halaman ringkasan menampilkan:
 - kegiatan yang belum selesai atau akan datang; dan
 - total hasil panen berdasarkan musim tanam.
 
-Ringkasan hanya mengambil data milik petani yang sedang masuk. Dashboard menyediakan tombol **Catat kegiatan**, **Musim tanam aktif**, dan **Lahan saya**. Dua tombol pertama menuju bagian musim aktif pada halaman yang sama; setiap kartu musim menyediakan tautan ke detail musim, daftar kegiatan, dan formulir pencatatan kegiatan yang terikat ke musim tersebut.
+Ringkasan hanya mengambil data milik petani yang sedang masuk. Dashboard menyediakan tombol **Catat kegiatan**, **Catat panen**, **Musim tanam aktif**, dan **Lahan saya**. Tiga tombol pertama menuju bagian musim aktif pada halaman yang sama; setiap kartu musim menyediakan tautan ke detail musim, daftar kegiatan, formulir kegiatan, dan formulir panen yang terikat ke musim tersebut.
 
-Daftar musim aktif menampilkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen, dipaginasi 6 musim per halaman dengan urutan tanggal tanam terbaru lalu ID terbaru. Jika belum memiliki lahan, petani diarahkan untuk menambah lahan. Jika tidak memiliki musim aktif, tombol pencatatan dinonaktifkan disertai arahan untuk membuat atau mengaktifkan kembali musim melalui lahan. Implementasi Dashboard saat ini mencakup jumlah lahan, jumlah musim aktif, dan akses cepat tersebut; ringkasan kegiatan tertunda dan hasil panen dilanjutkan pada tahap berikutnya.
+Daftar musim aktif menampilkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen, dipaginasi 6 musim per halaman dengan urutan tanggal tanam terbaru lalu ID terbaru. Jika belum memiliki lahan, petani diarahkan untuk menambah lahan. Jika tidak memiliki musim aktif, tombol pencatatan dinonaktifkan disertai arahan untuk membuat atau mengaktifkan kembali musim melalui lahan.
+
+Dashboard juga menampilkan jumlah dan daftar kegiatan direncanakan dari seluruh musim, diurutkan berdasarkan tanggal terlama lalu ID. Kegiatan dari musim selesai tetap ditampilkan sebagai catatan yang terkunci dan ditautkan ke detail. Ringkasan panen menampilkan musim yang sudah memiliki catatan panen, termasuk musim selesai, dengan total kg dan ton terpisah serta tautan ke catatan panennya. Daftar kegiatan dan ringkasan panen masing-masing dipaginasi 6 baris dengan parameter halaman terpisah.
 
 ### 4.4 Pengelolaan Lahan
 
@@ -139,7 +141,7 @@ Panen terhubung ke satu musim tanam. Satu musim dapat memiliki lebih dari satu c
 - satuan hasil, misalnya kilogram atau ton; dan
 - catatan opsional.
 
-Petani dapat menambah, melihat, mengubah, dan menghapus catatan panen. Ringkasan total panen hanya menjumlahkan catatan dengan satuan yang sama; satuan berbeda ditampilkan secara terpisah.
+Petani dapat menambah, melihat detail, mengubah, dan menghapus catatan panen setelah konfirmasi melalui detail musim. Formulir menerima jumlah 0,01–9.999.999.999,99 dengan maksimal dua angka desimal, satuan kg atau ton, tanggal tidak sebelum tanggal tanam, dan catatan opsional maksimal 5.000 karakter. Daftar panen menampilkan seluruh satuan dengan pagination 12 catatan, diurutkan tanggal panen terbaru lalu ID terbaru. Ringkasan total seluruh panen pada musim tersebut tetap dihitung terpisah per satuan, tanpa dipengaruhi halaman daftar. Panen hanya dapat ditambah, diubah, atau dihapus selama musim aktif; musim selesai tetap dapat dibaca sampai diaktifkan kembali.
 
 ## 5. Fitur di Luar MVP
 
