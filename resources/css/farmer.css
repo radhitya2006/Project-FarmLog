@@ -99,6 +99,18 @@
 .activity-table .activity-name { min-width: 180px; max-width: 350px; overflow-wrap: anywhere; font-weight: 600; }
 .activity-table tr:last-child td { border-bottom: 0; }
 .activity-table th:last-child, .activity-table td:last-child { text-align: right; }
+.dashboard-stat { display: flex; align-items: center; gap: 20px; padding: 26px; height: 100%; }
+.dashboard-stat div > span { display: block; color: #64745c; font-size: 13px; }
+.dashboard-stat strong { display: block; font-size: 32px; font-weight: 700; margin-top: 6px; line-height: 1.3; }
+.dashboard-quick-actions { padding: 28px; background: #edf4e6; }
+.dashboard-quick-actions h2, .dashboard-section-heading h2 { font-size: 22px; font-weight: 650; margin-bottom: 12px; }
+.dashboard-quick-actions p, .dashboard-section-heading p:not(.farmer-eyebrow) { color: #64745c; font-size: 13px; line-height: 1.9; }
+.dashboard-action-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.dashboard-section-heading { margin-bottom: 24px; }
+.dashboard-seasons { scroll-margin-top: 24px; }
+.dashboard-season-card h3 { font-size: 18px; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+.dashboard-season-actions { display: grid; grid-template-columns: minmax(0, 1fr); }
+.dashboard-season-actions .btn { white-space: normal; overflow-wrap: anywhere; }
 .farmer-shell a:focus-visible, .farmer-shell button:focus-visible { outline: 3px solid #8caf73; outline-offset: 3px; }
 @media (min-width: 992px) {
     .farmer-shell .farmer-sidebar { position: fixed; inset: 0 auto 0 0; width: 264px; height: 100vh; overflow-y: auto; z-index: 1020; }
@@ -121,4 +133,6 @@
     .farmer-form-actions { flex-wrap: wrap; }
     .farmer-welcome { padding: 26px; }
     .farmer-footer { padding: 20px 16px; }
+    .dashboard-quick-actions, .dashboard-stat { padding: 22px; }
+    .dashboard-action-buttons { flex-direction: column; }
 }

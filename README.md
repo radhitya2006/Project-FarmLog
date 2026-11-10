@@ -41,7 +41,15 @@ Halaman login dan registrasi menggunakan font Plus Jakarta Sans serta Bootstrap 
 
 Setelah menjalankan `npm.cmd run build` dan `php artisan serve`, buka `http://127.0.0.1:8000/login`. Pendaftaran tersedia melalui tautan **Daftar sekarang**. Akun baru selalu menjadi petani aktif; setelah mendaftar, pengguna kembali ke login dengan email terisi.
 
-Admin diarahkan ke `/admin`, petani ke `/dashboard`. Dashboard petani menyediakan tautan ke menu Lahan; ringkasan pertanian lengkap akan ditambahkan pada tahap berikutnya. Keluar menggunakan tombol **Keluar** (POST dengan CSRF).
+Admin diarahkan ke `/admin`, petani ke `/dashboard`. Keluar menggunakan tombol **Keluar** (POST dengan CSRF).
+
+## Dashboard Petani
+
+Dashboard menampilkan jumlah lahan dan musim aktif milik petani, beserta kartu musim yang sedang berjalan. Daftar dipaginasi 6 musim per halaman dengan tanggal tanam terbaru lebih dahulu (lalu ID terbaru untuk tanggal sama). Musim selesai dan data petani lain tidak ditampilkan.
+
+Tombol **Catat kegiatan** dan **Musim tanam aktif** membawa petani ke bagian musim aktif pada halaman Dashboard. Pilih kartu berdasarkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen. Setiap kartu menyediakan **Catat kegiatan** langsung ke formulir musim tersebut, **Detail musim**, serta **Lihat kegiatan**. Pagination mempertahankan posisi di bagian musim aktif. **Lahan saya** membuka daftar lahan.
+
+Petani tanpa lahan mendapat arahan **Tambah lahan**. Petani yang sudah memiliki lahan tetapi belum memiliki musim aktif mendapat arahan **Buka lahan saya** untuk membuat atau mengaktifkan kembali musim. Tombol pencatatan cepat dinonaktifkan jika tidak ada musim aktif. Status musim dan kepemilikan tetap diperiksa pada halaman tujuan; musim yang sudah selesai tidak menerima kegiatan baru meskipun Dashboard sebelumnya masih menampilkannya. Sidebar tetap berisi Dashboard dan Lahan. Ringkasan kegiatan tertunda dan hasil panen akan ditambahkan terpisah.
 
 ## Menu Lahan Petani
 

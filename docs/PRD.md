@@ -90,7 +90,9 @@ Halaman ringkasan menampilkan:
 - kegiatan yang belum selesai atau akan datang; dan
 - total hasil panen berdasarkan musim tanam.
 
-Ringkasan hanya mengambil data milik petani yang sedang masuk.
+Ringkasan hanya mengambil data milik petani yang sedang masuk. Dashboard menyediakan tombol **Catat kegiatan**, **Musim tanam aktif**, dan **Lahan saya**. Dua tombol pertama menuju bagian musim aktif pada halaman yang sama; setiap kartu musim menyediakan tautan ke detail musim, daftar kegiatan, dan formulir pencatatan kegiatan yang terikat ke musim tersebut.
+
+Daftar musim aktif menampilkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen, dipaginasi 6 musim per halaman dengan urutan tanggal tanam terbaru lalu ID terbaru. Jika belum memiliki lahan, petani diarahkan untuk menambah lahan. Jika tidak memiliki musim aktif, tombol pencatatan dinonaktifkan disertai arahan untuk membuat atau mengaktifkan kembali musim melalui lahan. Implementasi Dashboard saat ini mencakup jumlah lahan, jumlah musim aktif, dan akses cepat tersebut; ringkasan kegiatan tertunda dan hasil panen dilanjutkan pada tahap berikutnya.
 
 ### 4.4 Pengelolaan Lahan
 

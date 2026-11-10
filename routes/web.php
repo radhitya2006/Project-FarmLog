@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Farmer\ActivityController;
+use App\Http\Controllers\Farmer\DashboardController as FarmerDashboardController;
 use App\Http\Controllers\Farmer\LandController;
 use App\Http\Controllers\Farmer\PlantingSeasonController;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,7 @@ Route::middleware('auth')->group(function () {
             ->where(['user' => '[0-9]+']);
     });
     Route::name('farmer.')->middleware('role:petani')->group(function () {
-        Route::view('/dashboard', 'farmer.dashboard.index')->name('dashboard');
+        Route::get('/dashboard', FarmerDashboardController::class)->name('dashboard');
         Route::resource('lands', LandController::class)->where(['land' => '[0-9]+']);
         Route::scopeBindings()->group(function () {
             Route::patch('/lands/{land}/planting-seasons/{planting_season}/activities/{activity}/finish', [ActivityController::class, 'finish'])
