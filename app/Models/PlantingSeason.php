@@ -18,6 +18,27 @@ class PlantingSeason extends Model
 
     protected $fillable = ['crop_name', 'planted_at', 'expected_harvest_at', 'status', 'notes'];
 
+    /** @return HasMany<Expense, $this> */
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    /** @return HasMany<Sale, $this> */
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    /** @param Builder<static> $query
+     * @return Builder<static>
+     */
+    public function scopeWithFinancialTotals(Builder $query): Builder
+    {
+        return $query->withSum('expenses as total_expenses', 'amount')
+            ->withSum('sales as total_sales', 'amount');
+    }
+
     /**
      * @param  Builder<static>  $query
      * @return Builder<static>

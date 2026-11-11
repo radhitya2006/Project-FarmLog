@@ -6,9 +6,12 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Farmer\ActivityController;
 use App\Http\Controllers\Farmer\DashboardController as FarmerDashboardController;
+use App\Http\Controllers\Farmer\ExpenseController;
+use App\Http\Controllers\Farmer\FinanceController;
 use App\Http\Controllers\Farmer\HarvestController;
 use App\Http\Controllers\Farmer\LandController;
 use App\Http\Controllers\Farmer\PlantingSeasonController;
+use App\Http\Controllers\Farmer\SaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => to_route('login'))->name('home');
@@ -31,8 +34,17 @@ Route::middleware('auth')->group(function () {
     });
     Route::name('farmer.')->middleware('role:petani')->group(function () {
         Route::get('/dashboard', FarmerDashboardController::class)->name('dashboard');
+        Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
         Route::resource('lands', LandController::class)->where(['land' => '[0-9]+']);
         Route::scopeBindings()->group(function () {
+            Route::get('/lands/{land}/planting-seasons/{planting_season}/finance', [FinanceController::class, 'show'])
+                ->whereNumber(['land', 'planting_season'])->name('finance.show');
+            Route::resource('lands.planting-seasons.expenses', ExpenseController::class)
+                ->only(['create', 'store', 'edit', 'update', 'destroy'])
+                ->where(['land' => '[0-9]+', 'planting_season' => '[0-9]+', 'expense' => '[0-9]+']);
+            Route::resource('lands.planting-seasons.sales', SaleController::class)
+                ->only(['create', 'store', 'edit', 'update', 'destroy'])
+                ->where(['land' => '[0-9]+', 'planting_season' => '[0-9]+', 'sale' => '[0-9]+']);
             Route::resource('lands.planting-seasons.harvests', HarvestController::class)
                 ->where(['land' => '[0-9]+', 'planting_season' => '[0-9]+', 'harvest' => '[0-9]+']);
             Route::patch('/lands/{land}/planting-seasons/{planting_season}/activities/{activity}/finish', [ActivityController::class, 'finish'])

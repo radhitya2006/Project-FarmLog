@@ -7,7 +7,7 @@
 | Jenis proyek | Proyek UAS Pemrograman Web |
 | Platform | Aplikasi web responsif |
 | Pengguna | Admin dan petani |
-| Cakupan MVP | Registrasi, login, dan pengelolaan lahan sampai pencatatan hasil panen |
+| Cakupan MVP | Registrasi, login, pengelolaan lahan, kegiatan, panen, dan keuangan per musim tanam |
 | Bahasa antarmuka | Bahasa Indonesia |
 
 ## 1. Ringkasan Produk
@@ -22,6 +22,7 @@ Dalam MVP, petani membuat akun sendiri dan login. Admin mengelola status akun pe
 - Membantu petani mengetahui kegiatan yang direncanakan dan yang sudah selesai.
 - Menyimpan hasil panen, termasuk panen yang dilakukan beberapa kali dalam satu musim.
 - Menyediakan ringkasan kondisi usaha tani pada satu halaman.
+- Mencatat biaya dan pemasukan penjualan per musim, menghitung selisih tercatat serta biaya/kg panen.
 - Menyediakan registrasi mandiri dan login bagi petani.
 - Menunjukkan penerapan autentikasi, otorisasi berbasis peran, relasi basis data, validasi, dan operasi CRUD dalam proyek UAS.
 
@@ -117,7 +118,7 @@ Setiap musim tanam harus terhubung ke satu lahan. Data minimum musim tanam terdi
 - status `aktif` atau `selesai`; dan
 - catatan opsional.
 
-Petani mengakses musim tanam melalui **Lahan → Detail lahan → Musim tanam**. Sidebar petani hanya menyediakan Dashboard dan Lahan; musim tanam menjadi bagian dari lahan yang dipilih. Daftar musim menampilkan musim pada lahan tersebut dengan filter status dan pagination. Petani dapat membuat, melihat, mengubah, menghapus, menyelesaikan, dan mengaktifkan kembali musim tanam. Musim baru selalu berstatus aktif; satu lahan boleh memiliki beberapa musim aktif. Perubahan status dan penghapusan harus dikonfirmasi. Penghapusan musim turut menghapus kegiatan serta panen yang terkait.
+Petani mengakses musim tanam melalui **Lahan → Detail lahan → Musim tanam**. Sidebar petani menyediakan Dashboard, Lahan, dan Keuangan; musim tanam menjadi bagian dari lahan yang dipilih. Daftar musim menampilkan musim pada lahan tersebut dengan filter status dan pagination. Petani dapat membuat, melihat, mengubah, menghapus, menyelesaikan, dan mengaktifkan kembali musim tanam. Musim baru selalu berstatus aktif; satu lahan boleh memiliki beberapa musim aktif. Perubahan status dan penghapusan harus dikonfirmasi. Penghapusan musim turut menghapus kegiatan, panen, pengeluaran, dan penjualan yang terkait; dialog menampilkan jumlah setiap jenis catatan.
 
 Musim yang sudah selesai tetap dapat dilihat sebagai riwayat. Informasi musim tidak dapat diedit dan kegiatan/panen tidak dapat ditambah, diubah, atau dihapus sebelum musim diaktifkan kembali. Penghapusan seluruh musim beserta data turunannya tetap diperbolehkan setelah konfirmasi. Perubahan tanggal tanam tidak boleh membuat tanggal panen yang sudah tercatat menjadi lebih awal dari tanggal tanam.
 
@@ -143,6 +144,19 @@ Panen terhubung ke satu musim tanam. Satu musim dapat memiliki lebih dari satu c
 
 Petani dapat menambah, melihat detail, mengubah, dan menghapus catatan panen setelah konfirmasi melalui detail musim. Formulir menerima jumlah 0,01–9.999.999.999,99 dengan maksimal dua angka desimal, satuan kg atau ton, tanggal tidak sebelum tanggal tanam, dan catatan opsional maksimal 5.000 karakter. Daftar panen menampilkan seluruh satuan dengan pagination 12 catatan, diurutkan tanggal panen terbaru lalu ID terbaru. Ringkasan total seluruh panen pada musim tersebut tetap dihitung terpisah per satuan, tanpa dipengaruhi halaman daftar. Panen hanya dapat ditambah, diubah, atau dihapus selama musim aktif; musim selesai tetap dapat dibaca sampai diaktifkan kembali.
 
+### 4.8 Keuangan per Musim Tanam
+
+- Sidebar **Keuangan** membuka `/finance`: total pengeluaran, pemasukan penjualan, dan selisih seluruh musim milik petani. Daftar musim dipaginasi 12 kartu, diurutkan tanggal tanam terbaru lalu ID terbaru, dengan komoditas, lahan, periode, status, dan ringkasan uang. Musim tanpa transaksi tetap dapat dipilih.
+- Petani memilih musim atau membuka **Keuangan musim** dari detail musim. Halaman yang sama menampilkan total pengeluaran, pemasukan, selisih tercatat, serta biaya/kg. Biaya/kg hanya ditampilkan per musim, bukan agregat lintas komoditas.
+- Pengeluaran: tanggal pembayaran, nama maksimal 150 karakter, kategori bibit/pupuk/pestisida/upah/irigasi/sewa/transportasi/lainnya, nominal rupiah, dan catatan opsional maksimal 5.000 karakter.
+- Penjualan: tanggal penerimaan uang, keterangan maksimal 150 karakter, nominal rupiah, dan catatan opsional maksimal 5.000 karakter. Pencatatan berupa nominal yang sudah diterima tanpa jumlah stok terjual atau harga/kg.
+- Nominal harus 0,01–9.999.999.999.999,99 dengan maksimal dua angka desimal. Tanggal valid boleh sebelum tanggal tanam. Kedua jenis transaksi mendukung tambah/edit/hapus dengan konfirmasi hapus; penyimpanan kembali ke keuangan musim dengan pesan hasil.
+- Daftar pengeluaran dan penjualan masing-masing memuat 10 transaksi, tanggal terbaru lalu ID terbaru. Parameter `expenses_page` dan `sales_page` terpisah, mempertahankan halaman daftar lainnya. Total selalu mencakup seluruh transaksi musim.
+- Selisih tercatat = pemasukan diterima − pengeluaran dibayar; belum merupakan laba final jika biaya belum lengkap atau panen belum seluruhnya terjual.
+- Biaya/kg = total pengeluaran ÷ (total kg + total ton × 1.000), dibulatkan half-up dua desimal memakai BCMath. Jika belum ada pengeluaran atau berat panen nol, tampilkan **—** dengan alasan. Ringkasan panen asli tetap memisahkan satuan kg/ton.
+- Keuangan tetap dapat ditambah, diperbaiki, dan dihapus oleh pemilik saat musim selesai; informasi musim, kegiatan, dan panen tetap mengikuti penguncian yang berlaku.
+- Admin dan petani lain tidak dapat mengelola transaksi tersebut. Server menentukan musim dari URL yang terikat ke lahan dan pemilik, serta menolak pemalsuan `user_id`, `land_id`, atau `planting_season_id`.
+
 ## 5. Fitur di Luar MVP
 
 Fitur berikut dapat dikembangkan setelah MVP selesai:
@@ -151,7 +165,7 @@ Fitur berikut dapat dikembangkan setelah MVP selesai:
 - pemulihan kata sandi;
 - login sosial;
 - CAPTCHA dan perlindungan bot;
-- pencatatan biaya, penjualan, dan laba sederhana;
+- stok hasil terjual, piutang, utang, penyusutan alat, dan laporan akuntansi;
 - pengingat kegiatan melalui notifikasi;
 - foto kondisi tanaman;
 - unduhan laporan PDF atau Excel;
@@ -201,6 +215,8 @@ User (petani) 1 --- * Lahan
 Lahan         1 --- * MusimTanam
 MusimTanam    1 --- * Kegiatan
 MusimTanam    1 --- * Panen
+MusimTanam    1 --- * Pengeluaran
+MusimTanam    1 --- * Penjualan
 ```
 
 Entitas utama:
@@ -212,6 +228,8 @@ Entitas utama:
 | Musim Tanam | lahan_id, komoditas, tanggal mulai, perkiraan panen, status, catatan |
 | Kegiatan | musim_tanam_id, nama, tanggal, status, keterangan |
 | Panen | musim_tanam_id, tanggal, jumlah, satuan, catatan |
+| Pengeluaran | planting_season_id, spent_on, name, category, amount, notes |
+| Penjualan | planting_season_id, received_on, name, amount, notes |
 
 Semua pemeriksaan kepemilikan data dilakukan di server menggunakan policy atau query yang dibatasi berdasarkan pengguna yang sedang masuk. Penyembunyian tombol pada antarmuka hanya menjadi pelengkap, bukan pengaman utama.
 
@@ -263,6 +281,15 @@ Semua pemeriksaan kepemilikan data dilakukan di server menggunakan policy atau q
 2. Middleware atau policy memeriksa autentikasi, status akun, peran, dan kepemilikan data.
 3. Sistem menolak permintaan dengan halaman `403 Forbidden` atau mengarahkan pengguna ke halaman yang sesuai.
 
+### 7.6 Alur Keuangan
+
+1. Petani membuka sidebar Keuangan dan melihat ringkasan uang seluruh musim miliknya.
+2. Petani memilih musim dari kartu yang menunjukkan komoditas, lahan, tanggal, dan status; detail musim juga menyediakan pintasan ke halaman yang sama.
+3. Petani memilih Catat pengeluaran atau Catat penjualan. Musim otomatis ditetapkan dari halaman tersebut.
+4. Petani mengisi formulir dan menyimpannya; sistem memvalidasi serta mengarahkan kembali ke keuangan musim.
+5. Ringkasan diperbarui berdasarkan seluruh transaksi dan berat panen musim tersebut.
+6. Petani dapat memperbaiki atau menghapus transaksi setelah konfirmasi, termasuk setelah musim selesai.
+
 ## 8. Rekomendasi Teknologi
 
 ### 8.1 Tech Stack
@@ -274,6 +301,7 @@ Semua pemeriksaan kepemilikan data dilakukan di server menggunakan policy atau q
 | UI/CSS | Bootstrap | Komponen formulir, tabel, navigasi, dan tata letak responsif dapat dibuat dengan cepat. |
 | Database | MySQL | Cocok untuk data relasional dan umum tersedia pada lingkungan lokal maupun hosting. |
 | ORM | Eloquent | Mempermudah relasi dan pembatasan query berdasarkan pemilik data. |
+| Perhitungan uang | Ekstensi PHP BCMath | Operasi desimal tanpa kehilangan presisi floating point, termasuk selisih dan pembulatan biaya/kg. |
 | Autentikasi | Autentikasi berbasis sesi Laravel | Mendukung registrasi, login, dan pembatasan akses dalam aplikasi monolitik. |
 | Pengujian | PHPUnit melalui fasilitas pengujian Laravel | Mendukung pengujian login, otorisasi, validasi, dan alur CRUD. |
 | Version control | Git | Mencatat perubahan dan mendukung kolaborasi tim. |
@@ -299,6 +327,7 @@ Laravel, Blade, dan Bootstrap dipilih karena seluruh kebutuhan MVP dapat diseles
 - Waktu muat halaman pada data demo harus cukup cepat untuk presentasi kelas.
 - Navigasi dan istilah pada antarmuka menggunakan Bahasa Indonesia yang konsisten.
 - Sistem harus menampilkan halaman kosong yang informatif saat pengguna belum memiliki data.
+- Uang disimpan sebagai DECIMAL; perhitungan dan format tampilan mempertahankan presisi desimal tanpa konversi float.
 
 ## 10. Kriteria Penerimaan MVP
 
@@ -313,6 +342,7 @@ MVP dianggap selesai apabila:
 - petani dapat mencatat serta menyelesaikan kegiatan;
 - petani dapat mencatat panen beberapa kali dalam satu musim;
 - musim selesai tetap dapat dilihat sebagai riwayat;
+- petani dapat mengakses Keuangan dari sidebar dan detail musim, mencatat pengeluaran/penjualan termasuk pada musim selesai, serta melihat selisih dan biaya/kg yang benar;
 - petani tidak dapat mengakses panel admin atau data petani lain;
 - halaman ringkasan menampilkan data milik petani yang sedang login; dan
 - tampilan utama dapat digunakan pada perangkat seluler.
@@ -337,6 +367,8 @@ MVP dianggap selesai apabila:
 16. Penghapusan musim tanam meminta konfirmasi, menghapus kegiatan dan panen terkait, serta memungkinkan lahan tanpa musim tanam untuk dihapus.
 17. Musim tanam yang selesai tetap tampil, tetapi informasi musim dan kegiatan/panen terkunci sampai diaktifkan kembali; penghapusan seluruh musim tetap tersedia setelah konfirmasi.
 
+Pengujian keuangan juga mencakup CRUD, validasi nominal/kategori/tanggal, konfirmasi hapus, akses lintas pemilik, kecocokan lahan–musim–transaksi, cascade penghapusan, pagination independen, agregat tanpa duplikasi, campuran kg/ton, pembulatan, presisi nominal besar, serta kondisi tanpa biaya/panen. Penguncian kegiatan dan panen pada musim selesai harus tetap berlaku.
+
 ## 12. Asumsi dan Batasan
 
 - Aplikasi dibuat untuk kebutuhan UAS dan demonstrasi dengan jumlah pengguna terbatas.
@@ -347,5 +379,5 @@ MVP dianggap selesai apabila:
 - Lokasi lahan disimpan sebagai teks; integrasi peta berada di luar MVP.
 - Aplikasi membutuhkan koneksi internet atau jaringan lokal; mode offline berada di luar MVP.
 - Admin hanya melihat akun petani dan mengelola status akses; admin tidak membuat atau menghapus akun, mengubah identitas petani, maupun mengubah data pertanian mereka dalam MVP.
-- Keuangan, penjualan, inventaris, cuaca, dan notifikasi berada di luar MVP.
+- Keuangan menggunakan rupiah dan mencatat uang yang sudah dibayar/diterima. Stok terjual, piutang, utang, penyusutan, inventaris, cuaca, dan notifikasi berada di luar MVP.
 - Data contoh untuk demonstrasi disediakan melalui seeder agar alur aplikasi mudah dipresentasikan.

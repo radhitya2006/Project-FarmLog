@@ -56,7 +56,7 @@ class PlantingSeasonController extends Controller
     public function show(Land $land, PlantingSeason $plantingSeason): View
     {
         Gate::authorize('view', $plantingSeason);
-        $plantingSeason = $land->plantingSeasons()->withHarvestTotals()->withCount(['activities', 'harvests'])->findOrFail($plantingSeason->id);
+        $plantingSeason = $land->plantingSeasons()->withHarvestTotals()->withCount(['activities', 'harvests', 'expenses', 'sales'])->findOrFail($plantingSeason->id);
 
         return view('farmer.planting-seasons.show', ['land' => $land, 'season' => $plantingSeason]);
     }
@@ -95,11 +95,11 @@ class PlantingSeasonController extends Controller
 
     public function destroy(ConfirmPlantingSeasonActionRequest $request, Land $land, PlantingSeason $plantingSeason): RedirectResponse
     {
-        // The database cascades activities and harvests atomically with this delete.
+        // The database cascades agricultural and financial records atomically.
         $plantingSeason->delete();
 
         return to_route('farmer.lands.planting-seasons.index', $land)
-            ->with('success', 'Musim tanam beserta kegiatan dan panen terkait berhasil dihapus.');
+            ->with('success', 'Musim tanam beserta kegiatan, panen, pengeluaran, dan penjualan terkait berhasil dihapus.');
     }
 
     private function changeStatus(Land $land, PlantingSeason $plantingSeason, PlantingSeasonStatus $status): RedirectResponse

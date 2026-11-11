@@ -30,6 +30,7 @@
                 @can('create', [\App\Models\Harvest::class, $season])<a class="btn btn-success" href="{{ route('farmer.lands.planting-seasons.harvests.create', [$land, $season]) }}"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Catat panen</a>@endcan
             </div>
         </section>
+        <section class="farmer-panel farmer-details mt-4"><h2>Keuangan musim</h2><p>Catat pengeluaran dan penjualan untuk melihat selisih serta biaya per kilogram panen. Catatan keuangan tetap dapat diperbarui setelah musim selesai.</p><a class="btn btn-outline-success" href="{{ route('farmer.finance.show', [$land, $season]) }}"><i class="bi bi-wallet2 me-2" aria-hidden="true"></i>Keuangan musim</a></section>
     </div>
     <div class="col-lg-4">
         <section class="farmer-panel farmer-season-summary"><h2>Kelola musim</h2>
@@ -41,7 +42,7 @@
                 <button class="btn btn-success w-100" type="button" data-bs-toggle="modal" data-bs-target="#reopenSeasonModal">Aktifkan kembali</button>
             @endif
         </section>
-        <section class="farmer-panel farmer-delete-panel mt-4"><h2>Hapus musim tanam</h2><p>Seluruh kegiatan dan panen terkait akan ikut dihapus permanen.</p><button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteSeasonModal">Hapus musim tanam</button></section>
+        <section class="farmer-panel farmer-delete-panel mt-4"><h2>Hapus musim tanam</h2><p>Seluruh kegiatan, panen, pengeluaran, dan penjualan terkait akan ikut dihapus permanen.</p><button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteSeasonModal">Hapus musim tanam</button></section>
     </div>
 </div>
 @if($season->status === \App\Enums\PlantingSeasonStatus::Active)
@@ -54,6 +55,6 @@
     </x-season-action-modal>
 @endif
 <x-season-action-modal id="deleteSeasonModal" title="Hapus musim tanam ini?" :action="route('farmer.lands.planting-seasons.destroy', [$land, $season])" method="DELETE" label="Ya, hapus musim" variant="danger">
-    Musim <strong class="text-break">{{ $season->crop_name }}</strong>, beserta <strong>{{ $season->activities_count }} kegiatan</strong> dan <strong>{{ $season->harvests_count }} catatan panen</strong>, akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.
+    Musim <strong class="text-break">{{ $season->crop_name }}</strong>, beserta <strong>{{ $season->activities_count }} kegiatan</strong>, <strong>{{ $season->harvests_count }} catatan panen</strong>, <strong>{{ $season->expenses_count }} pengeluaran</strong>, dan <strong>{{ $season->sales_count }} penjualan</strong>, akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.
 </x-season-action-modal>
 @endsection

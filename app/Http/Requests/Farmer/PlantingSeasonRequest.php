@@ -8,7 +8,7 @@ use Illuminate\Validation\Validator;
 
 class PlantingSeasonRequest extends FormRequest
 {
-    public function authorize(): bool
+    public function authorize(): bool 
     {
         $land = $this->route('land');
         $season = $this->route('planting_season');

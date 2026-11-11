@@ -10,8 +10,10 @@
         <div class="farmer-sidebar-body">
             <p class="farmer-nav-label" id="farmerNavigationLabel">RUANG PETANI</p>
             <nav class="farmer-nav" aria-label="Navigasi petani">
+                @php($financeActive = request()->routeIs('farmer.finance.*', 'farmer.lands.planting-seasons.expenses.*', 'farmer.lands.planting-seasons.sales.*'))
                 <a href="{{ route('farmer.dashboard') }}" class="{{ request()->routeIs('farmer.dashboard') ? 'is-active' : '' }}" @if(request()->routeIs('farmer.dashboard')) aria-current="page" @endif><i class="bi bi-grid-1x2" aria-hidden="true"></i> Dashboard</a>
-                <a href="{{ route('farmer.lands.index') }}" class="{{ request()->routeIs('farmer.lands.*') ? 'is-active' : '' }}" @if(request()->routeIs('farmer.lands.*')) aria-current="page" @endif><i class="bi bi-map" aria-hidden="true"></i> Lahan</a>
+                <a href="{{ route('farmer.lands.index') }}" class="{{ request()->routeIs('farmer.lands.*') && ! $financeActive ? 'is-active' : '' }}" @if(request()->routeIs('farmer.lands.*') && ! $financeActive) aria-current="page" @endif><i class="bi bi-map" aria-hidden="true"></i> Lahan</a>
+                <a href="{{ route('farmer.finance.index') }}" class="{{ $financeActive ? 'is-active' : '' }}" @if($financeActive) aria-current="page" @endif><i class="bi bi-wallet2" aria-hidden="true"></i> Keuangan</a>
             </nav>
             <div class="farmer-sidebar-note"><i class="bi bi-flower1" aria-hidden="true"></i><strong>Catatan rapi,<br>langkah lebih pasti.</strong><p>Mulai dari lahan, simpan perjalanan pertanian Anda bersama FarmLog.</p></div>
         </div>

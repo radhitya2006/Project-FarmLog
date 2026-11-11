@@ -4,7 +4,7 @@ Aplikasi web manajemen lahan pertanian untuk proyek UAS Pemrograman Web.
 
 ## Tech Stack
 
-- PHP 8.3 dan Laravel 13
+- PHP 8.3 dengan ekstensi BCMath dan Laravel 13
 - Blade dan Bootstrap 5.3
 - MySQL 8
 - Vite 8 dan Node.js 24
@@ -33,7 +33,7 @@ Untuk test database, buat database MySQL terpisah bernama `farm_log_test`. `php 
 
 Jika PHP dan Composer Laragon belum masuk `PATH`, gunakan executable lengkap atau tambahkan folder PHP dan Composer Laragon ke `PATH`, lalu buka ulang VS Code.
 
-Dokumentasi kebutuhan dan aturan implementasi tersedia di [PRD.md](PRD.md), [DATABASE.md](DATABASE.md), dan [AGENTS.md](AGENTS.md).
+Dokumentasi kebutuhan dan aturan implementasi tersedia di [PRD.md](docs/PRD.md), [DATABASE.md](docs/DATABASE.md), dan [AGENTS.md](docs/AGENTS.md).
 
 ## Autentikasi (Tahap 2)
 
@@ -49,7 +49,7 @@ Dashboard menampilkan jumlah lahan, jumlah musim aktif, dan jumlah kegiatan yang
 
 Tombol **Catat kegiatan**, **Catat panen**, dan **Musim tanam aktif** membawa petani ke bagian musim aktif pada halaman Dashboard. Pilih kartu berdasarkan komoditas, nama lahan, tanggal tanam, dan perkiraan panen. Setiap kartu menyediakan formulir **Catat kegiatan** dan **Catat panen** untuk musim tersebut, **Detail musim**, serta **Lihat kegiatan**. **Lahan saya** membuka daftar lahan.
 
-Petani tanpa lahan mendapat arahan **Tambah lahan**. Petani yang sudah memiliki lahan tetapi belum memiliki musim aktif mendapat arahan **Buka lahan saya** untuk membuat atau mengaktifkan kembali musim. Tombol pencatatan cepat dinonaktifkan jika tidak ada musim aktif. Status musim dan kepemilikan tetap diperiksa pada halaman tujuan; musim yang sudah selesai tidak menerima kegiatan atau panen baru meskipun Dashboard sebelumnya masih menampilkannya. Sidebar tetap berisi Dashboard dan Lahan.
+Petani tanpa lahan mendapat arahan **Tambah lahan**. Petani yang sudah memiliki lahan tetapi belum memiliki musim aktif mendapat arahan **Buka lahan saya** untuk membuat atau mengaktifkan kembali musim. Tombol pencatatan cepat dinonaktifkan jika tidak ada musim aktif. Status musim dan kepemilikan tetap diperiksa pada halaman tujuan; musim yang sudah selesai tidak menerima kegiatan atau panen baru meskipun Dashboard sebelumnya masih menampilkannya. Sidebar berisi Dashboard, Lahan, dan Keuangan.
 
 **Kegiatan belum selesai** menampilkan kegiatan direncanakan dari seluruh musim, termasuk musim selesai yang catatannya terkunci. Urutannya tanggal terlama lalu ID, dengan tautan langsung ke detail kegiatan. **Ringkasan hasil panen** menampilkan musim yang memiliki catatan panen, termasuk musim selesai, dengan total kg dan ton terpisah serta tautan ke daftar panen. Setiap bagian memuat 6 baris per halaman. Parameter `page`, `activities_page`, dan `harvest_page` berdiri sendiri, mempertahankan halaman bagian lainnya dan mengarahkan kembali ke bagian yang sesuai.
 
@@ -69,7 +69,7 @@ Buka **Lahan → Lihat detail → Lihat musim tanam**. Daftar pada `/lands/{land
 
 **Tambah musim tanam** tersedia dari detail lahan maupun daftar musim pada lahan tersebut. Lahan otomatis ditentukan dari halaman yang sedang dibuka. Petani yang belum memiliki lahan perlu menambah lahan melalui menu **Lahan** terlebih dahulu.
 
-Sidebar petani memiliki dua menu: **Dashboard** dan **Lahan**. Menu Lahan tetap aktif saat membuka daftar, detail, tambah, atau edit musim tanam. Tautan kembali membawa pengguna ke daftar musim pada lahan tersebut atau detail lahannya. Seluruh endpoint musim memakai lahan sebagai induk; tidak ada perubahan skema database.
+Sidebar petani memiliki tiga menu: **Dashboard**, **Lahan**, dan **Keuangan**. Menu Lahan tetap aktif saat membuka daftar, detail, tambah, atau edit musim tanam. Menu Keuangan aktif pada ringkasan keuangan dan formulir transaksi. Tautan kembali pada halaman musim membawa pengguna ke daftar musim pada lahan tersebut atau detail lahannya. Seluruh endpoint musim memakai lahan sebagai induk.
 
 Isi komoditas (maksimal 150 karakter), tanggal tanam, perkiraan panen, dan catatan opsional (maksimal 5.000 karakter). Perkiraan panen tidak boleh sebelum tanggal tanam. Musim baru selalu aktif; satu lahan boleh memiliki beberapa musim aktif. Setelah simpan atau edit, pengguna kembali ke detail musim yang menampilkan informasi dan jumlah kegiatan/panen. Tanggal tanam tidak dapat digeser melewati tanggal panen yang sudah tercatat.
 
@@ -100,6 +100,20 @@ Daftar panen menampilkan seluruh satuan dengan pagination 12 catatan, diurutkan 
 Simpan/edit kembali ke detail panen dengan pesan sukses. **Hapus catatan panen** meminta konfirmasi dan kembali ke daftar, tanpa menghapus musim atau catatan lain. Musim selesai tetap dapat dibaca, tetapi tambah/edit/hapus ditolak di server sampai diaktifkan kembali. Semua route panen berada di `/lands/{land}/planting-seasons/{planting_season}/harvests`; pemilik dan musim ditentukan dari server. Petani lain mendapat 403, resource yang tidak ditemukan atau pasangan lahan–musim–panen yang salah mendapat 404. Penulisan panen dan perubahan musim memakai penguncian musim dalam transaksi agar aturan status/tanggal tetap diperiksa saat penyimpanan.
 
 Untuk mencoba alur lengkap, daftar akun petani → login → tambah lahan → tambah musim → catat dan selesaikan kegiatan → catat beberapa panen kg/ton → lihat ringkasan Dashboard → selesaikan musim → periksa penguncian → aktifkan kembali. Penghapusan seluruh musim setelah konfirmasi menghapus kegiatan/panen turunannya dan memungkinkan lahan tanpa musim dihapus. Jalankan `php artisan test`, `php vendor/bin/pint --test`, dan `npm.cmd run build`. Tidak ada migration, dependency, atau perubahan kredensial yang diperlukan.
+
+## Keuangan per Musim
+
+Setelah mengambil perubahan, pastikan BCMath aktif (`php --ri bcmath`), jalankan `composer install`, `php artisan migrate`, dan `npm.cmd run build`. Dua migration baru menambahkan `expenses` dan `sales` tanpa mengubah catatan lama. Seeder menyediakan contoh transaksi pada musim demo jika dijalankan secara eksplisit; tidak diperlukan untuk memakai fitur.
+
+Buka **Keuangan** di sidebar (`/finance`) untuk melihat total uang seluruh musim, lalu pilih kartu musim. Tombol **Keuangan musim** di detail musim membuka halaman yang sama: `/lands/{land}/planting-seasons/{planting_season}/finance`. Daftar musim memuat 12 kartu per halaman. Detail keuangan menyediakan **Catat pengeluaran** dan **Catat penjualan** beserta edit/hapus melalui dialog konfirmasi. Kedua daftar transaksi dipaginasi 10 baris secara independen dengan parameter `expenses_page` dan `sales_page`, tanggal terbaru lalu ID terbaru.
+
+Pengeluaran menyimpan tanggal, nama, kategori (bibit, pupuk, pestisida, upah, irigasi, sewa, transportasi, lainnya), nominal, dan catatan opsional. Penjualan menyimpan tanggal penerimaan uang, keterangan, nominal, dan catatan. Semua nominal dalam rupiah, positif, maksimal 9.999.999.999.999,99 dengan dua angka desimal; tanggal boleh sebelum tanggal tanam. Pencatatan hanya untuk uang yang sudah dibayar/diterima. Stok terjual, harga/kg, piutang, utang, dan penyusutan tidak dicakup.
+
+**Selisih tercatat** = pemasukan penjualan − pengeluaran, bukan jaminan laba final saat pencatatan belum lengkap. **Biaya/kg** = pengeluaran ÷ (panen kg + panen ton × 1.000), dibulatkan half-up dua desimal memakai BCMath. Jika biaya belum tercatat atau panen nol, tampil **—** dengan alasan. Ringkasan panen asal tetap memisahkan kg dan ton. Total mencakup seluruh transaksi, tidak hanya halaman aktif; uang dihitung dan ditampilkan tanpa float.
+
+Transaksi tetap dapat diperbarui saat musim selesai. Penguncian informasi musim, kegiatan, dan panen tetap berlaku. Scoped binding dan policy memastikan hanya pemilik dapat mengakses transaksi; data ID induk dari formulir ditolak. Penghapusan musim setelah konfirmasi menghapus pengeluaran dan penjualan turunannya, dan dialog menampilkan jumlah catatan yang terdampak.
+
+Untuk mencoba: **Keuangan → pilih musim → catat biaya → catat penjualan → lihat selisih dan biaya/kg**. Berat panen diambil dari catatan panen musim tersebut. Uji menggunakan `php artisan test`; database pengujian adalah `farm_log_test`.
 
 ## UI Panel Admin
 

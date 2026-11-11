@@ -91,6 +91,15 @@ class DatabaseSeeder extends Seeder
                     ['harvested_at' => '2026-10-15', 'unit' => HarvestUnit::Kilogram->value],
                     ['quantity' => '125.50', 'notes' => 'Panen pertama.'],
                 );
+
+                $season->expenses()->firstOrCreate(
+                    ['name' => 'Bibit cabai demo', 'spent_on' => '2026-07-28'],
+                    ['category' => 'bibit', 'amount' => '250000.00', 'notes' => 'Contoh pengeluaran yang sudah dibayar.'],
+                );
+                $season->sales()->firstOrCreate(
+                    ['name' => 'Penjualan panen pertama demo', 'received_on' => '2026-10-16'],
+                    ['amount' => '1255000.00', 'notes' => 'Contoh pemasukan yang sudah diterima.'],
+                );
             }
 
             return $credentials;
